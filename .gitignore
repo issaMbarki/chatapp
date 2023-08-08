@@ -1,0 +1,16 @@
+# Node.js
+node_modules/
+npm-debug.log
+
+# Build
+build/
+
+# Dependencies
+/.pnp
+.pnp.js
+
+# Testing
+/coverage
+
+# Environment variables
+.env
