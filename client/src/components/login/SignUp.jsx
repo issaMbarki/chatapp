@@ -1,8 +1,15 @@
-import { Button, TextField, Box, Grid, Typography } from "@mui/material";
+import {
+  Button,
+  TextField,
+  Box,
+  Grid,
+  Typography,
+  CircularProgress,
+} from "@mui/material";
 import { useSignUp } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
-import {IsInvalidInput} from '../../utils/checkInputs'
+import { useEffect, useState } from "react";
+import { IsInvalidInput, checkEmptyFields } from "../../utils/checkInputs";
 // TODO remove, this demo shouldn't need to reset the theme.
 
 function Copyright(props) {
@@ -23,20 +30,69 @@ function Copyright(props) {
   );
 }
 export default function SignInSide() {
-  const { mutate: signUser, data, isLoading, isSuccess } = useSignUp();
-  const [formData, setFormData] = useState({});
+  const {
+    mutate: signUser,
+    data,
+    isLoading,
+    isSuccess,
+    error,
+    isError,
+  } = useSignUp();
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    username: "",
+    email: "",
+    password: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+
   //handle inputs changes
   const handlChange = (e) => {
-    IsInvalidInput(e.currentTarget);
     const newForm = { ...formData };
     newForm[e.currentTarget.name] = e.currentTarget.value;
     setFormData(newForm);
+
+    const newError = IsInvalidInput(e.currentTarget);
+    setFormErrors({ ...formErrors, ...newError });
   };
+  // useEffect(() => {
+  //   console.log(formErrors);
+  // }, [formErrors]);
   //handle form submit
   const handleSubmit = (event) => {
     event.preventDefault();
+    //check if the form has errors or an input is empty
+    const emptyFields = checkEmptyFields(formData);
+    setFormErrors((prevErrors) => ({ ...prevErrors, ...emptyFields }));
+    if (
+      Object.values(formErrors).some((value) => value !== null) ||
+      Object.keys(emptyFields).length
+    ) {
+      return;
+    }
+    //send form data to the server
     signUser(formData);
   };
+  useEffect(()=>{
+    if (isSuccess) {
+      console.log(data);
+    }
+    if (isError) {
+      const {username,email}=error?.response?.data
+      if (username&&email) {
+        console.log('both exist');
+        // setFormErrors((prevErrors)=>({...prevErrors,username,email}))
+      }else if (username) {
+        console.log('USER exist');
+        setFormErrors((prevErrors)=>({...prevErrors,...{username}}))
+      }else if (email) {
+        console.log('EMAIL exist');
+        // setFormErrors((prevErrors)=>({...prevErrors,email}))
+      }else console.log(error);
+    }
+  },[isSuccess,isLoading,isError,data,error])
+  
   return (
     <>
       <Typography component="h1" variant="h5">
@@ -53,6 +109,8 @@ export default function SignInSide() {
               id="firstName"
               label="First Name"
               autoFocus
+              error={!!formErrors.firstName}
+              helperText={formErrors.firstName}
               onChange={handlChange}
             />
           </Grid>
@@ -65,6 +123,8 @@ export default function SignInSide() {
               name="lastName"
               autoComplete="family-name"
               onChange={handlChange}
+              error={!!formErrors.lastName}
+              helperText={formErrors.lastName}
             />
           </Grid>
           <Grid item xs={12}>
@@ -75,6 +135,8 @@ export default function SignInSide() {
               label="User Name"
               name="username"
               autoComplete="username"
+              error={!!formErrors.username}
+              helperText={formErrors.username}
               onChange={handlChange}
             />
           </Grid>
@@ -86,6 +148,8 @@ export default function SignInSide() {
               label="Email Address"
               name="email"
               autoComplete="email"
+              error={!!formErrors.email}
+              helperText={formErrors.email}
               onChange={handlChange}
             />
           </Grid>
@@ -95,9 +159,11 @@ export default function SignInSide() {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type="text"
               id="password"
               autoComplete="new-password"
+              error={!!formErrors.password}
+              helperText={formErrors.password}
               onChange={handlChange}
             />
           </Grid>
@@ -107,9 +173,12 @@ export default function SignInSide() {
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
+          disabled={isLoading}
+          startIcon={isLoading && <CircularProgress size={20} />}
         >
-          Sign Up
+          {isLoading ? "Signing up..." : "Sign Up"}
         </Button>
+
         <Grid container justifyContent="flex-end">
           <Grid item>
             <NavLink to="/">Already have an account? Sign in</NavLink>
