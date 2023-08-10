@@ -1,7 +1,9 @@
-import { useMutation } from "react-query";
-import { signUser } from "./apiServices";
+import { useMutation,useQuery } from "react-query";
+import { signUserIn, signUserUp } from "./apiServices";
 
 export const useSignUp = () => {
-  return useMutation(signUser);
+  return useMutation(signUserUp);
 };
-
+export const useSignIn = () => {
+  return useQuery('logUser', signUserIn);
+};

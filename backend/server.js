@@ -55,5 +55,7 @@ app.post("/signup", async (req, res) => {
       .json({ message: "Error saving user to the database" });
   }
 });
-
+app.post('/signin',(req,res)=>{
+  return;
+})
 app.listen(4000);

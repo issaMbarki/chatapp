@@ -30,14 +30,6 @@ function Copyright(props) {
   );
 }
 export default function SignInSide() {
-  const {
-    mutate: signUser,
-    data,
-    isLoading,
-    isSuccess,
-    error,
-    isError,
-  } = useSignUp();
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -47,6 +39,14 @@ export default function SignInSide() {
   });
   const [formErrors, setFormErrors] = useState({});
 
+  const {
+    mutate: signUserUp,
+    data,
+    isLoading,
+    isSuccess,
+    error,
+    isError,
+  } = useSignUp();
   //handle inputs changes
   const handlChange = (e) => {
     const newForm = { ...formData };
@@ -68,11 +68,11 @@ export default function SignInSide() {
       Object.values(formErrors).some((value) => value !== null) ||
       Object.keys(emptyFields).length
     ) {
-      console.log('no');
+      console.log("no");
       return;
     }
     //send form data to the server
-    signUser(formData);
+    signUserUp(formData);
   };
   useEffect(() => {
     if (isSuccess) {

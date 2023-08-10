@@ -7,8 +7,10 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useSignUp } from "../../api/reactQuery";
-import {NavLink} from 'react-router-dom'
+import { useSignIn, useSignUp } from "../../api/reactQuery";
+import { NavLink } from "react-router-dom";
+import { useState } from "react";
+import { IsInvalidInput } from "../../utils/checkInputs";
 // TODO remove, this demo shouldn't need to reset the theme.
 
 function Copyright(props) {
@@ -29,7 +31,27 @@ function Copyright(props) {
   );
 }
 export default function SignInSide() {
-  const { mutate: logUser } = useSignUp();
+  const [formData, setFormData] = useState({
+    emailUsername: "",
+    password: "",
+  });
+  const [formErrors, setFormErrors] = useState({});
+  const {
+    mutate: signUserIn,
+    data,
+    isLoading,
+    isSuccess,
+    error,
+    isError,
+  } = useSignIn();
+  //handle inputs changes
+  const handlChange = (e) => {
+    const newForm = { ...formData };
+    newForm[e.currentTarget.name] = e.currentTarget.value;
+    setFormData(newForm);
+    const newError = IsInvalidInput(e.currentTarget);
+    setFormErrors({ ...formErrors, ...newError });
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -37,7 +59,7 @@ export default function SignInSide() {
       email: data.get("email"),
       password: data.get("password"),
     };
-    logUser(formData);
+    // signUserIn(formData);
   };
 
   return (
@@ -50,11 +72,14 @@ export default function SignInSide() {
           margin="normal"
           required
           fullWidth
-          id="email"
-          label="Email Address"
-          name="email"
+          label="Email Address or username"
+          name="emailUsername"
           autoComplete="email"
           autoFocus
+          value={formData.emailUsername}
+          error={!!formErrors.emailUsername}
+          helperText={formErrors.emailUsername}
+          onChange={handlChange}
         />
         <TextField
           margin="normal"
@@ -65,6 +90,10 @@ export default function SignInSide() {
           type="password"
           id="password"
           autoComplete="current-password"
+          value={formData.password}
+          error={!!formErrors.password}
+          helperText={formErrors.password}
+          onChange={handlChange}
         />
         <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
@@ -85,9 +114,7 @@ export default function SignInSide() {
             </NavLink>
           </Grid>
           <Grid item>
-            <NavLink to="/sign-up" >
-             "Don't have an account? Sign Up
-            </NavLink>
+            <NavLink to="/sign-up">Don't have an account? Sign Up</NavLink>
           </Grid>
         </Grid>
         <Copyright sx={{ mt: 5 }} />

@@ -4,6 +4,7 @@ export const IsInvalidInput = (input) => {
   const onlyChars = /^[A-Za-z]+$/;
   const charsAndDigits = /^[a-zA-Z0-9]{5,}$/;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const hasChar = /[A-Za-z]/;
   const hasUppercase = /[A-Z]/;
   const hasLowercase = /[a-z]/;
   const hasDigit = /[0-9]/;
@@ -11,29 +12,36 @@ export const IsInvalidInput = (input) => {
   switch (name) {
     case "firstName":
     case "lastName":
-      if (!onlyChars.test(value)) {
-        error[name] = `Invalid ${name}.`;
+      if (value && !onlyChars.test(value)) {
+        error[name] = `Invalid ${name==='firstName'?'first name':'last name'}.`;
       } else {
         error[name] = null;
       }
       break;
     case "username":
-      if (!charsAndDigits.test(value)) {
+      if (value &&  !charsAndDigits.test(value) || !hasChar.test(value)) {
         error[name] =
           "Username must be at least 5 characters long and can contain letters and digits.";
-      } else {
+      } else if (value.length>20) {
+        error[name] ="Username is too long."
+      }else {
         error[name] = null;
       }
       break;
     case "email":
-      if (!emailPattern.test(value)) {
-        error[name] = "Invalid email";
-      } else {
+      if (value && !emailPattern.test(value)) {
+        error[name] = "Invalid email.";
+      } else if (value.length>150) {
+        error[name]='Email is too long.'
+      }{
         error[name] = null;
       }
       break;
+      case 'emailUsername': 
+
+      break;
     case "password":
-      if (value.length < 6) {
+      if ( value && value.length < 6) {
         error[name] = "Password should at least 6 characters long.";
       } else if (value.length > 50) {
         error[name] = "Password is too long.";
@@ -52,9 +60,7 @@ export const IsInvalidInput = (input) => {
     default:
       break;
   }
-  if (!value) {
-    error[name] = "This field is requeird.";
-  }
+
   return error;
 };
 
