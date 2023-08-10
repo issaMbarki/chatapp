@@ -56,11 +56,10 @@ export default function SignInSide() {
     const newError = IsInvalidInput(e.currentTarget);
     setFormErrors({ ...formErrors, ...newError });
   };
-  // useEffect(() => {
-  //   console.log(formErrors);
-  // }, [formErrors]);
   //handle form submit
   const handleSubmit = (event) => {
+    console.log(formData);
+    console.log(formErrors);
     event.preventDefault();
     //check if the form has errors or an input is empty
     const emptyFields = checkEmptyFields(formData);
@@ -69,30 +68,31 @@ export default function SignInSide() {
       Object.values(formErrors).some((value) => value !== null) ||
       Object.keys(emptyFields).length
     ) {
+      console.log('no');
       return;
     }
     //send form data to the server
     signUser(formData);
   };
-  useEffect(()=>{
+  useEffect(() => {
     if (isSuccess) {
       console.log(data);
     }
     if (isError) {
-      const {username,email}=error?.response?.data
-      if (username&&email) {
-        console.log('both exist');
-        // setFormErrors((prevErrors)=>({...prevErrors,username,email}))
-      }else if (username) {
-        console.log('USER exist');
-        setFormErrors((prevErrors)=>({...prevErrors,...{username}}))
-      }else if (email) {
-        console.log('EMAIL exist');
-        // setFormErrors((prevErrors)=>({...prevErrors,email}))
-      }else console.log(error);
+      const { username, email } = error?.response?.data;
+      if (username && email) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          ...{ username, email },
+        }));
+      } else if (username) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ...{ username } }));
+      } else if (email) {
+        setFormErrors((prevErrors) => ({ ...prevErrors, ...{ email } }));
+      } else console.log(error);
     }
-  },[isSuccess,isLoading,isError,data,error])
-  
+  }, [isSuccess, isLoading, isError, data, error]);
+
   return (
     <>
       <Typography component="h1" variant="h5">

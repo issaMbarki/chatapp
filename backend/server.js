@@ -1,5 +1,7 @@
 require("dotenv").config();
 const express = require("express");
+const bcrypt = require('bcryptjs');
+
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const app = express();
@@ -18,11 +20,14 @@ mongoose
 app.use(cors());
 
 app.post("/signup", async (req, res) => {
-  const { firstName, lastName, username, email, password } = req.body;
+  const { firstName, lastName, username, email } = req.body;
+  const password = await bcrypt.hash(req.body.password, 10);
+  req.body={...req.body,...{password}}
+  
   try {
     const existingUsername = await User.findOne({ username }).exec();
     const existingEmail = await User.findOne({ email }).exec();
-    if (existingEmail && exi) {
+    if (existingEmail && existingUsername) {
       return res
         .status(400)
         .json({
