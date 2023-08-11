@@ -7,9 +7,9 @@ import {
   Grid,
   Typography,
 } from "@mui/material";
-import { useSignIn, useSignUp } from "../../api/reactQuery";
+import { useSignIn } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IsInvalidInput } from "../../utils/checkInputs";
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -54,14 +54,16 @@ export default function SignInSide() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const formData = {
-      email: data.get("email"),
-      password: data.get("password"),
-    };
-    // signUserIn(formData);
+    signUserIn(formData);
   };
-
+useEffect(()=>{
+  if (isSuccess && !isLoading) {
+    console.log(data?.data);
+  }
+  if (isError) {
+    console.log(error?.response?.data?.message);
+  }
+},[isSuccess,isError,data,error,isLoading])
   return (
     <>
       <Typography component="h1" variant="h5">

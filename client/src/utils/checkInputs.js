@@ -19,7 +19,7 @@ export const IsInvalidInput = (input) => {
       }
       break;
     case "username":
-      if (value &&  !charsAndDigits.test(value) || !hasChar.test(value)) {
+      if (value &&  (!charsAndDigits.test(value) || !hasChar.test(value))) {
         error[name] =
           "Username must be at least 5 characters long and can contain letters and digits.";
       } else if (value.length>20) {
@@ -33,7 +33,7 @@ export const IsInvalidInput = (input) => {
         error[name] = "Invalid email.";
       } else if (value.length>150) {
         error[name]='Email is too long.'
-      }{
+      }else{
         error[name] = null;
       }
       break;
