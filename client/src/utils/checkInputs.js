@@ -2,46 +2,47 @@ export const IsInvalidInput = (input) => {
   var error = {};
   const { name, value } = input;
   const onlyChars = /^[A-Za-z]+$/;
-  const charsAndDigits = /^[a-zA-Z0-9]{5,}$/;
+  // const charsAndDigits = /^[a-zA-Z0-9]{5,}$/;
+  // const hasChar = /[A-Za-z]/;
   const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  const hasChar = /[A-Za-z]/;
   const hasUppercase = /[A-Z]/;
   const hasLowercase = /[a-z]/;
   const hasDigit = /[0-9]/;
   const hasSpecialChar = /[^A-Za-z0-9]/;
+  const usernameRegex = /^[a-zA-Z0-9_]{4,16}$/;
   switch (name) {
     case "firstName":
     case "lastName":
       if (value && !onlyChars.test(value)) {
-        error[name] = `Invalid ${name==='firstName'?'first name':'last name'}.`;
+        error[name] = `Invalid ${
+          name === "firstName" ? "first name" : "last name"
+        }.`;
       } else {
-        error[name] = null;
+        error[name] = undefined;
       }
       break;
     case "username":
-      if (value &&  (!charsAndDigits.test(value) || !hasChar.test(value))) {
+      if (value && !usernameRegex.test(value)) {
         error[name] =
-          "Username must be at least 5 characters long and can contain letters and digits.";
-      } else if (value.length>20) {
-        error[name] ="Username is too long."
-      }else {
-        error[name] = null;
+          "Username must be at least 4 characters long and can contain letters, digits, and underscores.";
+      } else {
+        error[name] = undefined;
       }
       break;
     case "email":
       if (value && !emailPattern.test(value)) {
         error[name] = "Invalid email.";
-      } else if (value.length>150) {
-        error[name]='Email is too long.'
-      }else{
-        error[name] = null;
+      } else if (value.length > 150) {
+        error[name] = "Email is too long.";
+      } else {
+        error[name] = undefined;
       }
       break;
-      case 'emailUsername': 
-
+    case "emailUsername":
+      error[name] = undefined;
       break;
     case "password":
-      if ( value && value.length < 6) {
+      if (value && value.length < 6) {
         error[name] = "Password should at least 6 characters long.";
       } else if (value.length > 50) {
         error[name] = "Password is too long.";
@@ -54,7 +55,7 @@ export const IsInvalidInput = (input) => {
         error[name] =
           "Password should contain at least one uppercase letter, one lowercase letter, one digit, and one special character.";
       } else {
-        error[name] = null;
+        error[name] = undefined;
       }
       break;
     default:

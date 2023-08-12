@@ -59,12 +59,11 @@ export default function SignInSide() {
   //handle form submit
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
     //check if the form has errors or an input is empty
     const emptyFields = checkEmptyFields(formData);
     setFormErrors((prevErrors) => ({ ...prevErrors, ...emptyFields }));
     if (
-      Object.values(formErrors).some((value) => value !== null) ||
+      Object.values(formErrors).some((value) => value !== undefined) ||
       Object.keys(emptyFields).length
     ) {
       return;

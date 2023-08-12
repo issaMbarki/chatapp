@@ -10,9 +10,8 @@ import {
 } from "@mui/material";
 import { useSignIn } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
-import { useContext, useEffect, useState } from "react";
-import { IsInvalidInput } from "../../utils/checkInputs";
-import { UserContext } from "../../context/UserContext";
+import { useEffect, useState } from "react";
+import { IsInvalidInput, checkEmptyFields } from "../../utils/checkInputs";
 import { useQueryClient } from "react-query";
 // TODO remove, this demo shouldn't need to reset the theme.
 
@@ -41,7 +40,6 @@ export default function SignInSide() {
   const [formErrors, setFormErrors] = useState({});
   const {
     mutate: signUserIn,
-    data,
     isLoading,
     isSuccess,
     error,
@@ -59,16 +57,28 @@ export default function SignInSide() {
   };
   const handleSubmit = (event) => {
     event.preventDefault();
+    //check if the form has errors or an input is empty
+    const emptyFields = checkEmptyFields(formData);
+    setFormErrors((prevErrors) => ({ ...prevErrors, ...emptyFields }));
+    if (
+      Object.values(formErrors).some((value) => value !== undefined) ||
+      Object.keys(emptyFields).length
+    ) {
+      return;
+    }
     signUserIn(formData);
   };
 
   if (isSuccess) {
     queryClient.invalidateQueries(["currentUser"]);
   }
-  if (isError) {
-    const { emailUsername, password } = error?.response?.data;
-    setFormErrors((prev) => ({ ...prev, ...{ emailUsername, password } }));
-  }
+  useEffect(() => {
+    if (isError) {
+      const { emailUsername, password } = error?.response?.data;
+      setFormErrors((prev) => ({ ...prev, ...{ emailUsername, password } }));
+    }
+  }, [isError,error,isSuccess]);
+
   return (
     <>
       <Typography component="h1" variant="h5">

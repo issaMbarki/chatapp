@@ -22,12 +22,10 @@ mongoose
 // Enable CORS for all routee
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: ["http://localhost:3000", "http://192.168.43.228:3000"],
     credentials: true,
   })
 );
-
-
 
 app.post("/signup", async (req, res) => {
   const { firstName, lastName, username, email } = req.body;
@@ -71,13 +69,18 @@ app.post("/signin", async (req, res) => {
   }).exec();
 
   if (!user)
-    return res.status(404).json({ emailUsername: "Email or username doesn't exist" });
+    return res
+      .status(404)
+      .json({ emailUsername: "Email or username doesn't exist" });
   bcrypt.compare(password, user.password, (err, result) => {
     if (err) {
       return res.json({ message: "something went wrong" });
     } else if (result) {
       // Generate JWT token
-      const token = jwt.sign({ username:user.username }, process.env.JWT_SECRET_KEY);
+      const token = jwt.sign(
+        { username: user.username },
+        process.env.JWT_SECRET_KEY
+      );
       // , {
       //   expiresIn: "1h",
       // }
@@ -85,9 +88,9 @@ app.post("/signin", async (req, res) => {
       // Set the token as a cookie
       res.cookie("token", token, {
         httpOnly: true,
-        secure: true,
         maxAge: 60 * 24 * 60 * 60 * 1000, //set the ookie for 60 day
       });
+      console.log("successful log in");
       return res.status(200).json({ message: "Login successful." });
     } else {
       return res.status(401).json({ password: "Incorrect password." });
@@ -97,20 +100,18 @@ app.post("/signin", async (req, res) => {
 app.get("/protected", authenticateToken, (req, res) => {
   res.json(req.user);
 });
-app.get("/isAuth", authenticateToken, async(req, res) => 
-{
-const username =req.username;
-const user = await User.findOne({ username }).select('-password').exec();
-if (user) {
-  return res.status(200).json({user})
-}
-return res.status(403).json({messsage: 'not logged in'})
-}
-);
-app.post('/logout',authenticateToken,(req,res)=>{
-  res.clearCookie('token');
-  res.status(200).json({ message: 'Logged out successfully.' });
-})
+app.get("/isAuth", authenticateToken, async (req, res) => {
+  const username = req.username;
+  const user = await User.findOne({ username }).select("-password").exec();
+  if (user) {
+    return res.status(200).json({ user });
+  }
+  return res.status(403).json({ messsage: "not logged in" });
+});
+app.post("/logout", authenticateToken, (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logged out successfully." });
+});
 // Middleware to authenticate the JWT
 function authenticateToken(req, res, next) {
   const token = req.cookies.token;
