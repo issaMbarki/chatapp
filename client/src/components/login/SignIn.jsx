@@ -6,11 +6,14 @@ import {
   Box,
   Grid,
   Typography,
+  CircularProgress,
 } from "@mui/material";
 import { useSignIn } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { IsInvalidInput } from "../../utils/checkInputs";
+import { UserContext } from "../../context/UserContext";
+import { useQueryClient } from "react-query";
 // TODO remove, this demo shouldn't need to reset the theme.
 
 function Copyright(props) {
@@ -44,6 +47,8 @@ export default function SignInSide() {
     error,
     isError,
   } = useSignIn();
+  const queryClient = useQueryClient();
+
   //handle inputs changes
   const handlChange = (e) => {
     const newForm = { ...formData };
@@ -56,14 +61,14 @@ export default function SignInSide() {
     event.preventDefault();
     signUserIn(formData);
   };
-useEffect(()=>{
-  if (isSuccess && !isLoading) {
-    console.log(data?.data);
+
+  if (isSuccess) {
+    queryClient.invalidateQueries(["currentUser"]);
   }
   if (isError) {
-    console.log(error?.response?.data?.message);
+    const { emailUsername, password } = error?.response?.data;
+    setFormErrors((prev) => ({ ...prev, ...{ emailUsername, password } }));
   }
-},[isSuccess,isError,data,error,isLoading])
   return (
     <>
       <Typography component="h1" variant="h5">
@@ -106,8 +111,10 @@ useEffect(()=>{
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
+          disabled={isLoading}
+          startIcon={isLoading && <CircularProgress size={20} />}
         >
-          Sign In
+          {isLoading ? "signing in..." : "sign in"}
         </Button>
         <Grid container>
           <Grid item xs>

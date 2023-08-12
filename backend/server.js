@@ -9,7 +9,6 @@ const cookieParser = require("cookie-parser");
 const app = express();
 const mongoose = require("mongoose");
 const User = require("./models/user");
-const { verify } = require("crypto");
 app.use(express.json());
 app.use(cookieParser());
 mongoose
@@ -72,16 +71,17 @@ app.post("/signin", async (req, res) => {
   }).exec();
 
   if (!user)
-    return res.status(404).json({ message: "Email or username doesn't exist" });
+    return res.status(404).json({ emailUsername: "Email or username doesn't exist" });
   bcrypt.compare(password, user.password, (err, result) => {
     if (err) {
       return res.json({ message: "something went wrong" });
     } else if (result) {
       // Generate JWT token
-      const token = jwt.sign({ username:user.username }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1h",
-      });
-      // return res.status(200).json({ token });
+      const token = jwt.sign({ username:user.username }, process.env.JWT_SECRET_KEY);
+      // , {
+      //   expiresIn: "1h",
+      // }
+
       // Set the token as a cookie
       res.cookie("token", token, {
         httpOnly: true,
@@ -90,7 +90,7 @@ app.post("/signin", async (req, res) => {
       });
       return res.status(200).json({ message: "Login successful." });
     } else {
-      return res.status(401).json({ message: "Incorrect password." });
+      return res.status(401).json({ password: "Incorrect password." });
     }
   });
 });
@@ -100,17 +100,22 @@ app.get("/protected", authenticateToken, (req, res) => {
 app.get("/isAuth", authenticateToken, async(req, res) => 
 {
 const username =req.username;
-console.log(username);
-const user = await User.findOne({ username }).exec();
-console.log(user);
+const user = await User.findOne({ username }).select('-password').exec();
+if (user) {
+  return res.status(200).json({user})
+}
+return res.status(403).json({messsage: 'not logged in'})
 }
 );
-
+app.post('/logout',authenticateToken,(req,res)=>{
+  res.clearCookie('token');
+  res.status(200).json({ message: 'Logged out successfully.' });
+})
 // Middleware to authenticate the JWT
 function authenticateToken(req, res, next) {
   const token = req.cookies.token;
   if (!token) {
-    return res.status(401).json({ messageg: "No token provided" });
+    return res.status(401).json({ messageg: "No token" });
   }
 
   jwt.verify(token, process.env.JWT_SECRET_KEY, (err, decodedToken) => {

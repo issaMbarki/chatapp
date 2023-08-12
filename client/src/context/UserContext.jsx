@@ -1,36 +1,18 @@
 import { createContext } from "react";
-import axios from "../config/axiosConfig";
-import { useQuery } from "react-query";
+import { useIsAuth } from "../api/reactQuery";
 
 export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
-  const {
-    isLoading,
-    data: user,
-    isError,
-  } = useQuery("currentUser", () =>
-    axios
-      .get("/isAuth", {
-        withCredentials: true,
-      })
-      .then((res) => {
-        return res.data;
-      })
-  );
-
+  const { isLoading, data, isError, error } = useIsAuth();
   if (isLoading) {
-    return <LoadingSpinner />;
+    return "Loading ...";
   }
   if (isError) {
-    return "error connecting with the server";
+    console.log(error);
   }
   return (
-    <UserContext.Provider
-      value={{
-        user,
-      }}
-    >
+    <UserContext.Provider value={isError ? {} : data?.data}>
       {children}
     </UserContext.Provider>
   );

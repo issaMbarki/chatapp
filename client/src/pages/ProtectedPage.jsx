@@ -1,20 +1,29 @@
-import axios from "axios";
-import { useEffect } from "react";
-import {  useQuery } from "react-query";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContext";
+import { useLogOut } from "../api/reactQuery";
+import { useQueryClient } from "react-query";
 
 export default function ProtectedPage() {
-  const { isLoading, isSuccess } = useQuery("test", () =>
-    axios
-      .get("http://localhost:4000/protected", {
-        withCredentials: true,
-      })
-      .then((res) => res.data)
+  const queryClient = useQueryClient();
+  const {mutate:logUserOut, isLoading,isError,error,isSuccess } = useLogOut();
+  const { user } = useContext(UserContext);
+  const handleLogOut = () => {
+   logUserOut()
+  };
+  if (isLoading) {
+    return 'loging out ...'
+  }
+  if (isError) {
+    return error.message
+  }
+  if (isSuccess) {
+    queryClient.invalidateQueries(['currentUser']);
+  }
+
+  return (
+    <div>
+      <p> Welcome {user?.firstName} </p>
+      <button onClick={handleLogOut}>log out</button>
+    </div>
   );
-  useEffect(()=>{
-    if (!isLoading && isSuccess) {
-        console.log("succes");
-      }
-    
-  },[isLoading,isSuccess])
-  return <div>ProtectedPage</div>;
 }
