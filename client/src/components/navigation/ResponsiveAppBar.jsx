@@ -15,8 +15,8 @@ import { ReactComponent as LOGO } from "../../assets/logo.svg";
 import { SvgIcon } from "@mui/material";
 import { red } from "@mui/material/colors";
 import { TogleTheme } from "./TogleTheme";
-const pages = ["Join room", "Create room", "Public chat"];
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const pages = ["Private room", "Public chat"];
+const settings = ["Profile", "Logout"];
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -95,7 +95,7 @@ function ResponsiveAppBar() {
             >
               {pages.map((page) => (
                 <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography color={red[800]} textAlign="center">
+                  <Typography textAlign="center">
                     {page}
                   </Typography>
                 </MenuItem>
