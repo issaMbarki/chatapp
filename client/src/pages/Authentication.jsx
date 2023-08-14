@@ -1,18 +1,13 @@
 import { Avatar, CssBaseline, Paper, Box, Grid } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
-import SignIn from "../components/login/SignIn";
-import SignUp from "../components/login/SignUp";
-
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import SignIn from "../components/Auth/SignIn";
+import SignUp from "../components/Auth/SignUp";
 import home from "../assets/home.svg";
 
-// TODO remove, this demo shouldn't need to reset the theme.
-
-const defaultTheme = createTheme();
 
 export default function Authentication({formType}) {
   return (
-    <ThemeProvider theme={defaultTheme}>
+  
       <Grid container component="main" sx={{ height: "100vh" }}>
         <CssBaseline />
         <Grid
@@ -49,6 +44,6 @@ export default function Authentication({formType}) {
           </Box>
         </Grid>
       </Grid>
-    </ThemeProvider>
+  
   );
 }

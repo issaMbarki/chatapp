@@ -22,9 +22,9 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <NavLink color="inherit" href="https://mui.com/">
+      <Link component={NavLink} color="inherit" to="https://mui.com/">
         Your Website
-      </NavLink>{" "}
+      </Link>{" "}
       {new Date().getFullYear()}
       {"."}
     </Typography>

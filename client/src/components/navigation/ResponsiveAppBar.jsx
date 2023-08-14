@@ -12,15 +12,16 @@ import Button from "@mui/material/Button";
 import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import { ReactComponent as LOGO } from "../../assets/logo.svg";
-import { SvgIcon } from "@mui/material";
-import { red } from "@mui/material/colors";
+import { ListItemIcon, SvgIcon } from "@mui/material";
 import { TogleTheme } from "./TogleTheme";
+import { useState } from "react";
+import LogOutMenuItem from "../Auth/LogOut";
+import { ManageAccounts } from "@mui/icons-material";
 const pages = ["Private room", "Public chat"];
-const settings = ["Profile", "Logout"];
 
 function ResponsiveAppBar() {
-  const [anchorElNav, setAnchorElNav] = React.useState(null);
-  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const [anchorElNav, setAnchorElNav] = useState(null);
+  const [anchorElUser, setAnchorElUser] = useState(null);
 
   const handleOpenNavMenu = (event) => {
     setAnchorElNav(event.currentTarget);
@@ -94,10 +95,8 @@ function ResponsiveAppBar() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">
-                    {page}
-                  </Typography>
+                <MenuItem key={page} disabled onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page}</Typography>
                 </MenuItem>
               ))}
             </Menu>
@@ -166,11 +165,13 @@ function ResponsiveAppBar() {
               <MenuItem sx={{ display: { md: "none" } }}>
                 <TogleTheme />
               </MenuItem>
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              <MenuItem onClick={handleCloseUserMenu}>
+                <ListItemIcon>
+                  <ManageAccounts />
+                </ListItemIcon>
+                Profile
+              </MenuItem>
+              <LogOutMenuItem onClick={handleCloseUserMenu} />
             </Menu>
           </Box>
         </Toolbar>
