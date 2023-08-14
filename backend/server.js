@@ -90,7 +90,6 @@ app.post("/signin", async (req, res) => {
         httpOnly: true,
         maxAge: 60 * 24 * 60 * 60 * 1000, //set the ookie for 60 day
       });
-      console.log("successful log in");
       return res.status(200).json({ message: "Login successful." });
     } else {
       return res.status(401).json({ password: "Incorrect password." });

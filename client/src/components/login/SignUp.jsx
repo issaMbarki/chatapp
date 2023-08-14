@@ -5,6 +5,7 @@ import {
   Grid,
   Typography,
   CircularProgress,
+  Link,
 } from "@mui/material";
 import { useSignUp } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
@@ -178,7 +179,9 @@ export default function SignInSide() {
 
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <NavLink to="/">Already have an account? Sign in</NavLink>
+            <Link component={NavLink } to="/">
+              Already have an account? Sign in
+            </Link>
           </Grid>
         </Grid>
         <Copyright sx={{ mt: 5 }} />

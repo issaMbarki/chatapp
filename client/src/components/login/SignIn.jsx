@@ -5,6 +5,7 @@ import {
   Checkbox,
   Box,
   Grid,
+  Link,
   Typography,
   CircularProgress,
 } from "@mui/material";
@@ -77,7 +78,7 @@ export default function SignInSide() {
       const { emailUsername, password } = error?.response?.data;
       setFormErrors((prev) => ({ ...prev, ...{ emailUsername, password } }));
     }
-  }, [isError,error,isSuccess]);
+  }, [isError, error, isSuccess]);
 
   return (
     <>
@@ -128,12 +129,14 @@ export default function SignInSide() {
         </Button>
         <Grid container>
           <Grid item xs>
-            <NavLink href="#" variant="body2">
-              Forgot password?
-            </NavLink>
+            <Link component={NavLink} to="#">
+            Forgot password?
+            </Link>
           </Grid>
           <Grid item>
-            <NavLink to="/sign-up">Don't have an account? Sign Up</NavLink>
+            <Link component={NavLink} to="/sign-up">
+              Don't have an account? Sign Up
+            </Link>
           </Grid>
         </Grid>
         <Copyright sx={{ mt: 5 }} />
