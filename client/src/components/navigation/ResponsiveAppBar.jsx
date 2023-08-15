@@ -17,6 +17,9 @@ import { TogleTheme } from "./TogleTheme";
 import { useState } from "react";
 import LogOutMenuItem from "../Auth/LogOut";
 import { ManageAccounts } from "@mui/icons-material";
+import { useContext } from "react";
+import {UserContext} from '../../context/UserContext'
+
 const pages = ["Private room", "Public chat"];
 
 function ResponsiveAppBar() {
@@ -37,7 +40,7 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-
+const {username}=useContext(UserContext)
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -169,7 +172,7 @@ function ResponsiveAppBar() {
                 <ListItemIcon>
                   <ManageAccounts />
                 </ListItemIcon>
-                Profile
+                {username}
               </MenuItem>
               <LogOutMenuItem onClick={handleCloseUserMenu} />
             </Menu>

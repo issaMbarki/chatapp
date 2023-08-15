@@ -103,7 +103,7 @@ app.get("/isAuth", authenticateToken, async (req, res) => {
   const username = req.username;
   const user = await User.findOne({ username }).select("-password").exec();
   if (user) {
-    return res.status(200).json({ user });
+    return res.status(200).json( user);
   }
   return res.status(403).json({ messsage: "not logged in" });
 });
