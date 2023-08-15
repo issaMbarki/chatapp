@@ -2,10 +2,11 @@ import { Outlet, Navigate } from "react-router-dom";
 import { useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import NavBar from "../components/navigation/NavBar";
+import { Toolbar } from "@mui/material";
 
 export const PrivateRoutes = () => {
   const { username } = useContext(UserContext);
-  return username ?<> <NavBar/> <Outlet /> </>: <Navigate to="/" />;
+  return username ?<> <NavBar/> <Toolbar /> <Outlet /> </>: <Navigate to="/" />;
 };
 export const VisitorRoutes = () => {
   const { username } = useContext(UserContext);

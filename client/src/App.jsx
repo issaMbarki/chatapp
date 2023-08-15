@@ -1,7 +1,7 @@
 import { QueryClient, QueryClientProvider } from "react-query";
 import Authentication from "./pages/Authentication";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import ProtectedPage from "./pages/ProtectedPage";
+import PrivateRoom from "./pages/PrivateRoom";
 import { UserContextProvider } from "./context/UserContext";
 import { PrivateRoutes, VisitorRoutes } from "./auth/ProtectedRoutes";
 import { ThemeContextProvider } from "./context/ThemeContext";
@@ -25,7 +25,7 @@ function App() {
                 />
               </Route>
               <Route element={<PrivateRoutes />}>
-                <Route path="/protected" element={<ProtectedPage />} />
+                <Route path="/protected" element={<PrivateRoom />} />
               </Route>
             </Routes>
           </BrowserRouter>

@@ -2,7 +2,7 @@ import { Avatar, CssBaseline, Paper, Box, Grid } from "@mui/material";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import SignIn from "../components/Auth/SignIn";
 import SignUp from "../components/Auth/SignUp";
-import home from "../assets/home.svg";
+import home from "../assets/logo.svg";
 
 
 export default function Authentication({formType}) {
@@ -22,7 +22,7 @@ export default function Authentication({formType}) {
               t.palette.mode === "light"
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
-            backgroundSize: "cover",
+            backgroundSize: "contain",
             backgroundPosition: "center",
           }}
         />
