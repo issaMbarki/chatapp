@@ -18,7 +18,7 @@ import { useState } from "react";
 import LogOutMenuItem from "../Auth/LogOut";
 import { ManageAccounts } from "@mui/icons-material";
 import { useContext } from "react";
-import {UserContext} from '../../context/UserContext'
+import { UserContext } from "../../context/UserContext";
 
 const pages = ["Private room", "Public chat"];
 
@@ -40,7 +40,7 @@ function ResponsiveAppBar() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
-const {username}=useContext(UserContext)
+  const { username,firstName } = useContext(UserContext);
   return (
     <AppBar position="fixed">
       <Container maxWidth="xl">
@@ -146,7 +146,7 @@ const {username}=useContext(UserContext)
             </Box>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                <Avatar alt={firstName} src="/static/images/avatar/3.jpg" />
               </IconButton>
             </Tooltip>
             <Menu

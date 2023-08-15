@@ -1,6 +1,6 @@
 // import { useContext } from "react";
 // import { UserContext } from "../context/UserContext";
-import ResponsiveAppBar from "../components/navigation/ResponsiveAppBar";
+import ResponsiveAppBar from "../components/navigation/NavBar";
 export default function ProtectedPage() {
   // const { user } = useContext(UserContext);
 
@@ -9,7 +9,9 @@ export default function ProtectedPage() {
     //  {/* <Header username={user.username}/> */}
     //  {/* <DrawerAppBar/> */}
     //   {/* <LogOutButton /> */}
-      <ResponsiveAppBar/>
-   
+    <>
+ 
+      <div>hello</div>
+      </>
   );
 }
