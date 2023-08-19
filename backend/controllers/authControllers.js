@@ -27,7 +27,6 @@ const signUp = async (req, res) => {
     // Both username and email are unique, proceed with saving the new user
     const newUser = new User(req.body);
     await newUser.save();
-
     return res.status(200).json({ message: "User saved to the database" });
   } catch (error) {
     console.error("Error saving user:", error);
@@ -53,7 +52,7 @@ const signIn = async (req, res) => {
     } else if (result) {
       // Generate JWT token
       const token = jwt.sign(
-        { username: user.username },
+        { username: user.username,id:user.id },
         process.env.JWT_SECRET_KEY
       );
       // , {

@@ -19,8 +19,11 @@ import LogOutMenuItem from "../Auth/LogOut";
 import { ManageAccounts } from "@mui/icons-material";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
+import { NavLink } from "react-router-dom";
 
-const pages = ["Private room", "Public chat"];
+// const pages = ["Join / Create",'Private rooms', "Public chat"];
+const pages = [{link:'/join-create',title:'Join / Create'},{link:'/private-rooms',title:'Private rooms'},{link:'public-chat',title:'Public chat'}];
+
 
 function ResponsiveAppBar() {
   const [anchorElNav, setAnchorElNav] = useState(null);
@@ -97,11 +100,15 @@ function ResponsiveAppBar() {
                 display: { xs: "block", md: "none" },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} disabled onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
+              {pages.map((page) => {
+                console.log(page.title);
+                return(
+                <NavLink to={page.link}>
+                <MenuItem key={page.title} disabled onClick={handleCloseNavMenu}>
+                  <Typography textAlign="center">{page.title}</Typography>
                 </MenuItem>
-              ))}
+                </NavLink>
+              )})}
             </Menu>
           </Box>
           <SvgIcon
@@ -130,13 +137,15 @@ function ResponsiveAppBar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
+              <NavLink to={page.link}>
               <Button
-                key={page}
+                key={page.title}
                 onClick={handleCloseNavMenu}
                 sx={{ my: 2, color: "white", display: "block" }}
               >
-                {page}
+                {page.title}
               </Button>
+              </NavLink>
             ))}
           </Box>
 

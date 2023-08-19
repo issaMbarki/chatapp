@@ -5,6 +5,8 @@ const cookieParser = require("cookie-parser");
 const connectDB = require("./configs/db");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
+const roomRoutes = require("./routes/roomRoutes");
+
 
 app.use(express.json());
 app.use(cookieParser());
@@ -18,4 +20,6 @@ app.use(
 //connect the db
 connectDB();
 app.use("/auth", userRoutes);
+app.use("/room", roomRoutes);
+
 app.listen(4000);

@@ -1,7 +1,8 @@
+import './App.css';
 import { QueryClient, QueryClientProvider } from "react-query";
 import Authentication from "./pages/Authentication";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import PrivateRoom from "./pages/PrivateRoom";
+import JoinCreate from "./pages/JoinCreate";
 import { UserContextProvider } from "./context/UserContext";
 import { PrivateRoutes, VisitorRoutes } from "./auth/ProtectedRoutes";
 import { ThemeContextProvider } from "./context/ThemeContext";
@@ -25,7 +26,7 @@ function App() {
                 />
               </Route>
               <Route element={<PrivateRoutes />}>
-                <Route path="/protected" element={<PrivateRoom />} />
+                <Route path="/join-create" element={<JoinCreate />} />
               </Route>
             </Routes>
           </BrowserRouter>

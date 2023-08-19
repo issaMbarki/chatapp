@@ -13,6 +13,7 @@ function authenticateToken(req, res, next) {
       return res.status(403).json({ message: "Invalid token" });
     }
     req.username = decodedToken.username;
+    req.id = decodedToken.id;
     next();
   });
 }

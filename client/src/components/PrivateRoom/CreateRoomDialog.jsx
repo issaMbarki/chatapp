@@ -1,4 +1,3 @@
-import * as React from "react";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
@@ -6,7 +5,7 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import Slide from "@mui/material/Slide";
-import { useState } from "react";
+import { forwardRef, useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import PeopleIcon from "@mui/icons-material/People";
 import InfoIcon from "@mui/icons-material/Info";
@@ -16,21 +15,21 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Grid";
 import { ClickAwayListener, Tooltip } from "@mui/material";
+import { useCreateRooom } from "../../api/reactQuery";
 
-const Transition = React.forwardRef(function Transition(props, ref) {
+const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 export default function CreateRoomDialog({ open, setOpen }) {
-  const [userCount, setUserCount] = useState(2);
+  const [allowedUsers, setAllowedUsers] = useState(2);
   const [roomType, setRoomType] = useState("open");
-  const [Titleopen, setTitleOpen] = React.useState(false);
-  React.useEffect(() => {
-    console.log(roomType);
-  }, [roomType]);
+  const [Titleopen, setTitleOpen] = useState(false);
+  const { mutate: createRoom, isLoading, data, isError } = useCreateRooom();
 
   const handleAgree = () => {
-    // Perform actions with userCount and roomType
+    // Perform actions with allowedUsers and roomType
+    createRoom({ roomType, allowedUsers });
     setOpen(false);
   };
   const handleTooltipClose = () => {
@@ -40,6 +39,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
   const handleTooltipOpen = () => {
     setTitleOpen(true);
   };
+  !isLoading&&console.log(data);
   return (
     <div>
       <Dialog
@@ -53,28 +53,30 @@ export default function CreateRoomDialog({ open, setOpen }) {
       >
         <DialogTitle display="flex" alignItems="center" gap="1rem">
           Create new private room
-          <ClickAwayListener onClickAway={handleTooltipClose}> 
-          <Tooltip
-            PopperProps={{
-              disablePortal: true,
-            }}
-            
-            onClose={handleTooltipClose}
-            open={Titleopen}
-            disableFocusListener
-            disableHoverListener
-            disableTouchListener
-            title={
+          <ClickAwayListener onClickAway={handleTooltipClose}>
+            <Tooltip
+              PopperProps={{
+                disablePortal: true,
+              }}
+              onClose={handleTooltipClose}
+              open={Titleopen}
+              disableFocusListener
+              disableHoverListener
+              disableTouchListener
+              title={
                 <>
-                  Participants: Specify the maximum number of users allowed in the room.
+                  Participants: Specify the maximum number of users allowed in
+                  the room.
                   <br />
-                  Room type: An open room allows anyone with room code to join, while a locked room requires validation from you.
+                  Room type: An open room allows anyone with room code to join,
+                  while a locked room requires validation from you.
                   <br />
-                 You can always change these settings after creating the room.
+                  You can always change these settings after creating the room.
                 </>
-              } >
-            <InfoIcon onClick={handleTooltipOpen}>Click</InfoIcon>
-          </Tooltip>
+              }
+            >
+              <InfoIcon onClick={handleTooltipOpen}>Click</InfoIcon>
+            </Tooltip>
           </ClickAwayListener>
         </DialogTitle>
         <DialogContent>
@@ -87,8 +89,8 @@ export default function CreateRoomDialog({ open, setOpen }) {
                   <Select
                     labelId="participants"
                     label="Participants"
-                    value={userCount}
-                    onChange={(e) => setUserCount(parseInt(e.target.value))}
+                    value={allowedUsers}
+                    onChange={(e) => setAllowedUsers(parseInt(e.target.value))}
                   >
                     <MenuItem value="2">2</MenuItem>
                     <MenuItem value="3">3</MenuItem>

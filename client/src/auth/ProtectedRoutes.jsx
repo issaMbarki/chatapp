@@ -10,5 +10,5 @@ export const PrivateRoutes = () => {
 };
 export const VisitorRoutes = () => {
   const { username } = useContext(UserContext);
-  return !username ? <Outlet /> : <Navigate to="/protected" />;
+  return !username ? <Outlet /> : <Navigate to="/join-create" />;
 };
