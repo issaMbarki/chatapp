@@ -22,7 +22,6 @@ export const useSignIn = () => {
 export const useIsAuth = () => {
   return useQuery("currentUser", isAuth, {
     retry: false,
-    refetchOnWindowFocus: false,
   });
 };
 export const useLogOut = () => {
