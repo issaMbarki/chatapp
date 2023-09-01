@@ -23,10 +23,10 @@ export default function PrivateRoom() {
       >
         <Grid item>
           <Paper elevation={3} sx={{ padding: "2rem", maxWidth: "400px" }}>
-            <Typography variant="h6" gutterBottom>
+            <Typography variant="h6" gutterBottom component='span'>
               Private Room
             </Typography>
-            <Typography variant="body1" gutterBottom>
+            <Typography variant="body1" gutterBottom component='span'>
               Enter the room code below to join an existing room, or create a
               new room.
             </Typography>

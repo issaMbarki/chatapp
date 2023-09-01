@@ -4,6 +4,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import TextField from "@mui/material/TextField";
 import Slide from "@mui/material/Slide";
 import { forwardRef, useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
@@ -14,6 +15,7 @@ import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Grid";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
 import { ClickAwayListener, Tooltip } from "@mui/material";
 import { useCreateRooom } from "../../api/reactQuery";
 
@@ -24,12 +26,13 @@ const Transition = forwardRef(function Transition(props, ref) {
 export default function CreateRoomDialog({ open, setOpen }) {
   const [allowedUsers, setAllowedUsers] = useState(2);
   const [roomType, setRoomType] = useState("open");
+  const [roomName,setRoomName]=useState('');
   const [Titleopen, setTitleOpen] = useState(false);
-  const { mutate: createRoom, isLoading, data, isError } = useCreateRooom();
+  const { mutate: createRoom, isLoading, data } = useCreateRooom();
 
   const handleAgree = () => {
-    // Perform actions with allowedUsers and roomType
-    createRoom({ roomType, allowedUsers });
+    // Perform actions with allowedUsers, roomType and room name
+    createRoom({ roomType, allowedUsers,roomName });
     setOpen(false);
   };
   const handleTooltipClose = () => {
@@ -39,9 +42,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
   const handleTooltipOpen = () => {
     setTitleOpen(true);
   };
-  !isLoading&&console.log(data);
   return (
-    <div>
       <Dialog
         open={open}
         TransitionComponent={Transition}
@@ -75,12 +76,27 @@ export default function CreateRoomDialog({ open, setOpen }) {
                 </>
               }
             >
-              <InfoIcon onClick={handleTooltipOpen}>Click</InfoIcon>
+              <InfoIcon onClick={handleTooltipOpen} sx={{cursor:'pointer'}}>Click</InfoIcon>
             </Tooltip>
           </ClickAwayListener>
         </DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
+          <DialogContentText id="alert-dialog-slide-description"  component='div'>
+            <Grid container spacing={3}>
+              <Grid item display="flex" alignItems="center" xs={12}>
+                <BorderColorIcon />
+                <TextField
+                sx={{ m: 1}}
+                  required
+                  label="Room name"
+                  name="roomName"
+                  autoFocus
+                  fullWidth
+                  value={roomName}
+                  onChange={(e)=>{setRoomName(e.target.value)}}
+                />
+              </Grid>
+            </Grid>
             <Grid container spacing={3}>
               <Grid item display="flex" alignItems="center">
                 <PeopleIcon />
@@ -122,6 +138,5 @@ export default function CreateRoomDialog({ open, setOpen }) {
           <Button onClick={handleAgree}>Create</Button>
         </DialogActions>
       </Dialog>
-    </div>
   );
 }

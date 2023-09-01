@@ -22,11 +22,22 @@ const createRoom = async (req, res) => {
     res.status(500).json({ message: 'error creating new room' });
   }
 };
+const getRooms = async(req,res) => {
+const currentUser=req.id;
+try {
+  const rooms = await Room.find({ participants: currentUser }).exec();
+  res.status(200).json(rooms)
+} catch (error) {
+  res.status(500).json({ message: 'error getting the rooms' });
+}
+};
+
 const deleteRoom = () => {};
 const updateRoom = () => {};
 
 module.exports = {
   createRoom,
+  getRooms,
   deleteRoom,
   updateRoom,
 };

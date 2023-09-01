@@ -17,9 +17,6 @@ export default function LogOutMenuItem() {
   if (isError) {
     return error.message;
   }
-  if (isSuccess) {
-    queryClient.invalidateQueries(["currentUser"]);
-  }
 
   return (
     <MenuItem variant="text" disabled={isLoading} onClick={handleLogOut}>

@@ -70,9 +70,9 @@ export default function SignInSide() {
     signUserIn(formData);
   };
 
-  if (isSuccess) {
-    queryClient.invalidateQueries(["currentUser"]);
-  }
+  // if (isSuccess) {
+  //   queryClient.invalidateQueries(["currentUser"]);
+  // }
   useEffect(() => {
     if (isError) {
       const { emailUsername, password } = error?.response?.data;
