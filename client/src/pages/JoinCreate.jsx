@@ -1,7 +1,7 @@
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import home from "../assets/home.svg";
 import { useState } from "react";
-import CreateRoomDialog from "../components/PrivateRoom/CreateRoomDialog";
+import CreateRoomDialog from '../components/create-join-room/CreateRoomDialog'
 
 export default function PrivateRoom() {
   const [open, setOpen] = useState(false);

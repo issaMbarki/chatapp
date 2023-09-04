@@ -13,7 +13,7 @@ const createRoom = async (req, res) => {
 
     const newRoom = new Room({
       ...req.body,
-      ...{ code, participants: [req.id] },
+      ...{ code, participants: [req.id] ,lastMessageSender:req.id},
     });
 
     await newRoom.save();

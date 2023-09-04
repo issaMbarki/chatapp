@@ -28,7 +28,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
   const [roomType, setRoomType] = useState("open");
   const [roomName,setRoomName]=useState('');
   const [Titleopen, setTitleOpen] = useState(false);
-  const { mutate: createRoom, isLoading, data } = useCreateRooom();
+  const { mutate: createRoom, isLoading} = useCreateRooom();
 
   const handleAgree = () => {
     // Perform actions with allowedUsers, roomType and room name
@@ -42,6 +42,9 @@ export default function CreateRoomDialog({ open, setOpen }) {
   const handleTooltipOpen = () => {
     setTitleOpen(true);
   };
+  if (isLoading) {
+    return '...'
+  }
   return (
       <Dialog
         open={open}
