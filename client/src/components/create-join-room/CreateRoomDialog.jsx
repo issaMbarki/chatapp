@@ -9,7 +9,7 @@ import Slide from "@mui/material/Slide";
 import { forwardRef, useState } from "react";
 import LockIcon from "@mui/icons-material/Lock";
 import PeopleIcon from "@mui/icons-material/People";
-import InfoIcon from "@mui/icons-material/Info";
+import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
@@ -79,7 +79,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
                 </>
               }
             >
-              <InfoIcon onClick={handleTooltipOpen} sx={{cursor:'pointer'}}>Click</InfoIcon>
+              <InfoOutlined onClick={handleTooltipOpen} sx={{cursor:'pointer'}}>Click</InfoOutlined>
             </Tooltip>
           </ClickAwayListener>
         </DialogTitle>

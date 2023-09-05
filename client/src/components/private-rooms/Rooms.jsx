@@ -1,14 +1,18 @@
 import { useTheme } from "@emotion/react";
 import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { Box, Grid, IconButton, Typography } from "@mui/material";
-export const Rooms = ({rooms,setCurrentRoom}) => {
+export const Rooms = ({ rooms, setCurrentRoom, currentRoom }) => {
+  const theme = useTheme();
+  const appBarHeight = theme.mixins.toolbar.minHeight;
+  const contentHeight = `calc(98vh - ${appBarHeight}px)`;
 
-    const theme = useTheme();
-    const appBarHeight = theme.mixins.toolbar.minHeight;
-    const contentHeight = `calc(98vh - ${appBarHeight}px)`;
-  
   return (
-    <Grid item xs={12} sm={4}>
+    <Grid
+      item
+      xs={12}
+      sm={4}
+      sx={{ display: { xs: currentRoom ? "none" : "block", sm: "block" } }}
+    >
       <Box
         sx={{
           height: contentHeight,
@@ -32,8 +36,7 @@ export const Rooms = ({rooms,setCurrentRoom}) => {
                 cursor: "pointer",
               },
             }}
-            onClick={()=>setCurrentRoom(room)}
-            
+            onClick={() => setCurrentRoom(room)}
           >
             <Typography variant="h6" width={80}>
               {room.roomName}
@@ -44,7 +47,12 @@ export const Rooms = ({rooms,setCurrentRoom}) => {
             >
               {room?.lastMessage}
             </Typography>
-            <IconButton onClick={(e)=>{e.stopPropagation();;console.log('fhfh')}}>
+            <IconButton
+              onClick={(e) => {
+                e.stopPropagation();
+                console.log("fhfh");
+              }}
+            >
               <MoreVertOutlinedIcon />
             </IconButton>
           </Box>
