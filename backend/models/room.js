@@ -1,7 +1,11 @@
 const mongoose = require("mongoose");
 
 const roomSchema = new mongoose.Schema({
-  roomName: {
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  name: {
     type: String,
     required: true,
   },
@@ -9,7 +13,7 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  roomType: {
+  type: {
     type: String,
     enum: ["locked", "open"],
     default: "open",
@@ -23,7 +27,7 @@ const roomSchema = new mongoose.Schema({
   },
   lastMessageSender: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
+    ref: "User",
   },
   code: {
     type: String,

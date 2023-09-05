@@ -2,15 +2,12 @@ import { Grid } from "@mui/material";
 import { useGetRooms } from "../api/reactQuery";
 import { Rooms } from "../components/private-rooms/Rooms";
 import { Chat } from "../components/private-rooms/Chat";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export default function PrivateRoom() {
   const { isLoading, data } = useGetRooms();
   const rooms = data?.data;
   const [currentRoom, setCurrentRoom] = useState(null);
-  useEffect(() => {
-    console.log(currentRoom);
-  }, [currentRoom]);
   if (isLoading) {
     return "wait....";
   }

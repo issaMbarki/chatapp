@@ -4,6 +4,8 @@ import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useTheme } from "@emotion/react";
 
 export const Chat = ({ currentRoom }) => {
+  const roomParticipants=currentRoom.participants.map(participant=>participant.firstName);
+  console.log(roomParticipants);
   const theme = useTheme();
   return (
     <Grid item xs={currentRoom ? 12 : 0} sm={8}>

@@ -1,10 +1,21 @@
 import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
 import home from "../assets/home.svg";
 import { useState } from "react";
-import CreateRoomDialog from '../components/create-join-room/CreateRoomDialog'
+import CreateRoomDialog from "../components/create-join-room/CreateRoomDialog";
+import { useJoinRoom } from "../api/reactQuery";
 
 export default function PrivateRoom() {
   const [open, setOpen] = useState(false);
+  const [roomCode, setRoomCode] = useState("");
+  const { mutate: joinRoom, isLoading, data, isSuccess } = useJoinRoom();
+  const handleJoinRoom = (e) => {
+    e.preventDefault();
+    joinRoom({ code: roomCode });
+  };
+
+  if (isSuccess) {
+    const { message } = data?.data;
+  }
   return (
     <>
       <Grid
@@ -23,18 +34,25 @@ export default function PrivateRoom() {
       >
         <Grid item>
           <Paper elevation={3} sx={{ padding: "2rem", maxWidth: "400px" }}>
-            <Typography variant="h6" gutterBottom component='span'>
+            <Typography variant="h6" gutterBottom component="span">
               Private Room
             </Typography>
-            <Typography variant="body1" gutterBottom component='span'>
+            <Typography variant="body1" gutterBottom component="div">
               Enter the room code below to join an existing room, or create a
               new room.
             </Typography>
-            <TextField label="Room Code" variant="outlined" fullWidth />
+            <TextField
+              label="Room Code"
+              variant="outlined"
+              fullWidth
+              value={roomCode}
+              onChange={(e) => setRoomCode(e.target.value)}
+            />
             <Button
               variant="contained"
               color="primary"
               sx={{ mt: "1rem", mr: "1rem" }}
+              onClick={handleJoinRoom}
             >
               Join Room
             </Button>

@@ -32,7 +32,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
 
   const handleAgree = () => {
     // Perform actions with allowedUsers, roomType and room name
-    createRoom({ roomType, allowedUsers,roomName });
+    createRoom({type: roomType, allowedUsers,name:roomName });
     setOpen(false);
   };
   const handleTooltipClose = () => {

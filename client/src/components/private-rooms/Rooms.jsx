@@ -39,7 +39,7 @@ export const Rooms = ({ rooms, setCurrentRoom, currentRoom }) => {
             onClick={() => setCurrentRoom(room)}
           >
             <Typography variant="h6" width={80}>
-              {room.roomName}
+              {room.name}
             </Typography>
             <Typography
               variant="subtitle2"

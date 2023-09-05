@@ -3,6 +3,7 @@ import {
   createRoom,
   getRooms,
   isAuth,
+  joinRoom,
   logUserOut,
   signUserIn,
   signUserUp,
@@ -39,4 +40,8 @@ export const useCreateRooom = () => {
 };
 export const useGetRooms = () => {
   return useQuery("rooms", getRooms);
+};
+
+export const useJoinRoom = () => {
+  return useMutation(joinRoom);
 };
