@@ -18,12 +18,12 @@ const roomSchema = new mongoose.Schema({
     enum: ["locked", "open"],
     default: "open",
   },
+  lastMessageTimestamp: {
+    type: Date,
+  },
   lastMessage: {
     type: String,
     default: "you: hello, how are you!",
-  },
-  lastMessageTimestamp: {
-    type: Date,
   },
   lastMessageSender: {
     type: mongoose.Schema.Types.ObjectId,

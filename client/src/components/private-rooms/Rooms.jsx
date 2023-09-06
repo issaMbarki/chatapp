@@ -27,6 +27,7 @@ export const Rooms = ({ rooms, setCurrentRoom, currentRoom }) => {
             key={room._id}
             sx={{
               display: "flex",
+              height:80,
               alignItems: "center",
               justifyContent: "space-between",
               padding: 2,
