@@ -7,6 +7,7 @@ import PrivateRoom from "./pages/PrivateRoom";
 import { UserContextProvider } from "./context/UserContext";
 import { PrivateRoutes, VisitorRoutes } from "./auth/ProtectedRoutes";
 import { ThemeContextProvider } from "./context/ThemeContext";
+import { SocketContextProvider } from './context/SocketContext';
 function App() {
   const queryClient = new QueryClient();
 
@@ -26,10 +27,12 @@ function App() {
                   element={<Authentication formType="signUp" />}
                 />
               </Route>
-              <Route element={<PrivateRoutes />}>
+              
+              <Route element={ <SocketContextProvider><PrivateRoutes /></SocketContextProvider>}>
                 <Route path="/join-create" element={<JoinCreate />} />
                 <Route path="/private-rooms" element={<PrivateRoom />} />
               </Route>
+              
             </Routes>
           </BrowserRouter>
         </ThemeContextProvider>
