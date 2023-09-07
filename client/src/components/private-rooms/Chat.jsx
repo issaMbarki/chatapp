@@ -54,36 +54,38 @@ export const Chat = ({ currentRoom }) => {
         </Box>
         <Box>
           <Box
+            className="chat-box"
             ref={chatBoxRef}
             sx={{
               height: chatBoxHeight,
               overflow: "auto",
-              display:'flex',flexDirection:'column-reverse'
+              display: "flex",
+              flexDirection: "column-reverse",
             }}
           >
             <Box>
-            {messages.map((message) => (
-              <Box
-                key={message._id}
-                p={0.8}
-                display="flex"
-                justifyContent={
-                  message.sender === "issam" ? "flex-start" : "flex-end"
-                }
-              >
+              {messages.map((message) => (
                 <Box
-                  sx={{
-                    backgroundColor: theme.palette.primary.light,
-                    py: 0.8,
-                    pr: 2,
-                    pl: 0.8,
-                    borderRadius: "10px",
-                  }}
+                  key={message._id}
+                  p={0.8}
+                  display="flex"
+                  justifyContent={
+                    message.sender === "issam" ? "flex-start" : "flex-end"
+                  }
                 >
-                  {message.content}
+                  <Box
+                    sx={{
+                      backgroundColor: theme.palette.primary.light,
+                      py: 0.8,
+                      pr: 2,
+                      pl: 0.8,
+                      borderRadius: "10px",
+                    }}
+                  >
+                    {message.content}
+                  </Box>
                 </Box>
-              </Box>
-            ))}
+              ))}
             </Box>
           </Box>
           <MessageInput setMessageInputHeight={setMessageInputHeight} />

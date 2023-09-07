@@ -1,27 +1,24 @@
 import SendIcon from "@mui/icons-material/Send";
 import EmojiEmotionsIcon from "@mui/icons-material/EmojiEmotions";
 import { Box, IconButton, TextField } from "@mui/material";
-import { useRef } from "react";
+import { useState } from "react";
+import { handleMessageChange, handleKeyPress } from "../../utils/handlers";
 
 export const MessageInput = ({ setMessageInputHeight }) => {
-  const textFieldRef = useRef(null);
+  const [message, setMessage] = useState("");
 
-  const resizeInputHeight = () => {
-    const lineBreakCount = (textFieldRef.current?.value.match(/\n/g) || [])
-      .length;
-    console.log("Number of line breaks:", lineBreakCount);
-    if (lineBreakCount === 0) {
-      setMessageInputHeight(50);
-    } else if (lineBreakCount === 1) {
-      setMessageInputHeight(50+23);
-    } else if (lineBreakCount === 2) {
-      setMessageInputHeight(50+23*2);
-    }else if (lineBreakCount === 3) {
-      setMessageInputHeight(50+23*3);
-    }
+  const handleSendMessage = (e) => {
+    e.preventDefault();
+    console.log("submited");
   };
   return (
-    <Box p={1} display="flex" alignItems="center">
+    <Box
+      component="form"
+      onSubmit={handleSendMessage}
+      p={1}
+      display="flex"
+      alignItems="center"
+    >
       <TextField
         label="Type a message"
         fullWidth
@@ -29,13 +26,16 @@ export const MessageInput = ({ setMessageInputHeight }) => {
         maxRows={4}
         variant="outlined"
         size="small"
-        inputRef={textFieldRef}
-        onChange={resizeInputHeight}
+        value={message}
+        onChange={(e) =>
+          handleMessageChange(e, setMessage, setMessageInputHeight)
+        }
+        onKeyDown={(e) => handleKeyPress(e, handleSendMessage)} // I want when the user press enter, sen dthe message not add break line
       />
       <IconButton>
         <EmojiEmotionsIcon />
       </IconButton>
-      <IconButton>
+      <IconButton type="submit">
         <SendIcon />
       </IconButton>
     </Box>

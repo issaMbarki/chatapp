@@ -12,7 +12,7 @@ export default function PrivateRoom() {
     return "wait....";
   }
   return (
-    <Grid container spacing={1}>
+    <Grid container spacing={0.5}>
       <Rooms
         rooms={rooms}
         setCurrentRoom={setCurrentRoom}
