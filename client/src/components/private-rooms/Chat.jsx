@@ -3,9 +3,10 @@ import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useTheme } from "@emotion/react";
 import { Participants } from "./Participants";
-import { messages } from "./messages";
 import { MessageInput } from "./MessageInput";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useContext } from "react";
+import { SocketContext } from "../../context/SocketContext";
+import { useGetMessages } from "../../api/reactQuery";
 
 export const Chat = ({ currentRoom }) => {
   const theme = useTheme();
@@ -18,10 +19,36 @@ export const Chat = ({ currentRoom }) => {
     80 + headerHeight + messageInputHeight
   }px)`;
   const chatBoxRef = useRef(null);
+
+
+  const { socket } = useContext(SocketContext);
+  const [messages, setMessages] = useState([]);
+  const { data, isLoading, isError,isFetching } = useGetMessages(currentRoom._id);
+  // useEffect(() => {
+  //   const addNewMessage = (newMessage) => {
+  //     setMessages((prev) => [...prev, newMessage]);
+  //   };
+  //   socket.on("new-message", addNewMessage);
+  //   return () => {
+  //     socket.off("new-message", addNewMessage);
+  //   };
+  // }, [socket]);
+  
+  useEffect(() => {
+    console.log(`isLoain : ${isLoading} , isError : ${isError} isFetching : ${isFetching} , data : ${data} `);
+  }, [isLoading,isError,data,messageInputHeight]);
   useEffect(() => {
     // Scroll to the end of the chat box when the component is rendered or when the box resized
-    chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
-  }, [messageInputHeight]);
+    if (!isLoading) {
+      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    }
+  }, [messageInputHeight, isLoading]);
+  if (isError) {
+    return "error";
+  }
+  if (isLoading) {
+    return "getting messages...";
+  }
   return (
     <Grid item xs={currentRoom ? 12 : 0} sm={8}>
       <Box

@@ -8,6 +8,7 @@ const { Server } = require("socket.io");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
 const roomRoutes = require("./routes/roomRoutes");
+const messageRoutes=require('./routes/messageRoutes')
 
 app.use(express.json());
 app.use(cookieParser());
@@ -23,6 +24,8 @@ app.use(
 connectDB();
 app.use("/auth", userRoutes);
 app.use("/room", roomRoutes);
+app.use("/message", messageRoutes);
+
 
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -32,8 +35,12 @@ const io = new Server(server, {
 });
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  socket.on('sendMessage', (message) => {
-    io.emit('message', message);
+  socket.on("send-message", ({ message: newMessage }) => {
+    io.emit("new-message", {
+      _id: Math.floor(Math.random() * (200 + 1)),
+      sender: "issam",
+      content: newMessage,
+    });
   });
 });
 server.listen(4000, () => {

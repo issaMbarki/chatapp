@@ -1,4 +1,4 @@
-export const messages = [
+export const messagesTest = [
   {
     _id: 1,
     sender: "issam",

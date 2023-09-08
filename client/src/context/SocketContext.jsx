@@ -6,7 +6,6 @@ const SocketContext = createContext(null);
 const SocketContextProvider = ({ children }) => {
   const socketRef = useRef();
   const [isSocketConnected,setIsSocketConnected] = useState(false);
-
   useEffect(() => {
     // Connect to the Socket.IO server when the component mounts
     socketRef.current = io("http://localhost:4000");
