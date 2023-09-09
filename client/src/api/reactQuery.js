@@ -50,5 +50,7 @@ export const useJoinRoom = () => {
 
 //message queries
 export const useGetMessages = (roomId) => {
-  return useQuery(["messages",roomId],()=> getMessages(roomId));
+  return useQuery(["messages",roomId],()=> getMessages(roomId), {
+    refetchOnWindowFocus:false
+  });
 };

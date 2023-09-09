@@ -6,12 +6,12 @@ export const isAuth = () => api.get("/auth/isAuth");
 export const logUserOut = () => api.post("/auth/logout");
 
 //room routes
-export const createRoom = (data) => api.post("/room/create",data);
+export const createRoom = (data) => api.post("/room/create", data);
 export const getRooms = () => api.get("/room/get");
-export const joinRoom = (data) => api.post("/room/join",data);
+export const joinRoom = (data) => api.post("/room/join", data);
 
 //message routes
-export const getMessages = () => api.get("/message/get");
-
-
-
+export const getMessages = (roomId) => {
+  console.log(roomId);
+  return api.get("/message/get",{ params: { roomId } });
+};

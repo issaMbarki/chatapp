@@ -8,7 +8,10 @@ const { Server } = require("socket.io");
 const app = express();
 const userRoutes = require("./routes/userRoutes");
 const roomRoutes = require("./routes/roomRoutes");
-const messageRoutes=require('./routes/messageRoutes')
+const messageRoutes = require("./routes/messageRoutes");
+const { sendMessage } = require("./controllers/messageControllers");
+const { joinRooms } = require("./controllers/roomControllers");
+const { leaveAllRooms } = require("./helpers/socket-io-helpers");
 
 app.use(express.json());
 app.use(cookieParser());
@@ -26,7 +29,6 @@ app.use("/auth", userRoutes);
 app.use("/room", roomRoutes);
 app.use("/message", messageRoutes);
 
-
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
@@ -35,13 +37,13 @@ const io = new Server(server, {
 });
 io.on("connection", (socket) => {
   console.log(`User Connected: ${socket.id}`);
-  socket.on("send-message", ({ message: newMessage }) => {
-    io.emit("new-message", {
-      _id: Math.floor(Math.random() * (200 + 1)),
-      sender: "issam",
-      content: newMessage,
-    });
+  socket.on("send-message", (message) => {
+    sendMessage(message, io);
   });
+  socket.on("join-rooms", (userId) => {
+    joinRooms(userId, socket);
+  });
+  socket.on("disconnecting", () => leaveAllRooms(socket));
 });
 server.listen(4000, () => {
   console.log("server is running");

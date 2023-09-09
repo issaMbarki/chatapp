@@ -59,6 +59,16 @@ const joinRoom = async (req,res) => {
 };
 const deleteRoom = () => {};
 const updateRoom = () => {};
+const joinRooms = async({userId},socket) => {
+try {
+  const rooms = await Room.find({ participants: userId },'_id').exec();
+  rooms.forEach(room=>socket.join(room.id))
+} catch (error) {
+  console.log("Error getting rooms:", error);
+  
+}
+};
+
 
 module.exports = {
   createRoom,
@@ -66,4 +76,5 @@ module.exports = {
   joinRoom,
   deleteRoom,
   updateRoom,
+  joinRooms,
 };

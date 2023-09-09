@@ -7,6 +7,7 @@ import { MessageInput } from "./MessageInput";
 import { useEffect, useRef, useState, useContext } from "react";
 import { SocketContext } from "../../context/SocketContext";
 import { useGetMessages } from "../../api/reactQuery";
+import { UserContext } from "../../context/UserContext";
 
 export const Chat = ({ currentRoom }) => {
   const theme = useTheme();
@@ -20,25 +21,32 @@ export const Chat = ({ currentRoom }) => {
   }px)`;
   const chatBoxRef = useRef(null);
 
-
+  const {_id:currentUser}=useContext(UserContext)
   const { socket } = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
-  const { data, isLoading, isError,isFetching } = useGetMessages(currentRoom._id);
-  // useEffect(() => {
-  //   const addNewMessage = (newMessage) => {
-  //     setMessages((prev) => [...prev, newMessage]);
-  //   };
-  //   socket.on("new-message", addNewMessage);
-  //   return () => {
-  //     socket.off("new-message", addNewMessage);
-  //   };
-  // }, [socket]);
-  
+  const { data, isLoading, isError } = useGetMessages(currentRoom._id);
+
+  //initialize the messages from the server responde
   useEffect(() => {
-    console.log(`isLoain : ${isLoading} , isError : ${isError} isFetching : ${isFetching} , data : ${data} `);
-  }, [isLoading,isError,data,messageInputHeight]);
+    if (data && data.data) {
+      setMessages(data.data);
+    }
+  }, [data]);
+
+  //add new meesage to UI when the message arrived
   useEffect(() => {
-    // Scroll to the end of the chat box when the component is rendered or when the box resized
+    const addNewMessage = (newMessage) => {
+      console.log(newMessage);
+      setMessages((prev) => [...prev, newMessage]);
+    };
+    socket.on("new-message", addNewMessage);
+    return () => {
+      socket.off("new-message", addNewMessage);
+    };
+  }, [socket, messages]);
+
+  // Scroll to the end of the chat box when the component is rendered or when the box resized
+  useEffect(() => {
     if (!isLoading) {
       chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
     }
@@ -91,31 +99,33 @@ export const Chat = ({ currentRoom }) => {
             }}
           >
             <Box>
-              {messages.map((message) => (
-                <Box
-                  key={message._id}
-                  p={0.8}
-                  display="flex"
-                  justifyContent={
-                    message.sender === "issam" ? "flex-start" : "flex-end"
-                  }
-                >
-                  <Box
-                    sx={{
-                      backgroundColor: theme.palette.primary.light,
-                      py: 0.8,
-                      pr: 2,
-                      pl: 0.8,
-                      borderRadius: "10px",
-                    }}
-                  >
-                    {message.content}
-                  </Box>
-                </Box>
-              ))}
+              {messages.length
+                ? messages.map((message) => (
+                    <Box
+                      key={message._id}
+                      p={0.8}
+                      display="flex"
+                      justifyContent={
+                        message.sender !== currentUser ? "flex-start" : "flex-end"
+                      }
+                    >
+                      <Box
+                        sx={{
+                          backgroundColor:  message.sender === currentUser ? theme.palette.primary.light:theme.palette.listBackGround.main,
+                          py: 0.8,
+                          pr: 2,
+                          pl: 0.8,
+                          borderRadius: "10px",
+                        }}
+                      >
+                        {message.content}
+                      </Box>
+                    </Box>
+                  ))
+                : "start chating"}
             </Box>
           </Box>
-          <MessageInput setMessageInputHeight={setMessageInputHeight} />
+          <MessageInput currentRoomId={currentRoom._id} setMessageInputHeight={setMessageInputHeight} />
         </Box>
       </Box>
     </Grid>
