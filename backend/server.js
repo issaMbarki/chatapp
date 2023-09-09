@@ -43,6 +43,9 @@ io.on("connection", (socket) => {
   socket.on("join-rooms", (userId) => {
     joinRooms(userId, socket);
   });
+  socket.on("joinORcreate-new-room", (roomId) => {
+    socket.join(roomId);
+  });
   socket.on("disconnecting", () => leaveAllRooms(socket));
 });
 server.listen(4000, () => {

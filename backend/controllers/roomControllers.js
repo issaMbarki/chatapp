@@ -17,7 +17,7 @@ const createRoom = async (req, res) => {
     });
 
     await newRoom.save();
-    return res.status(200).json({ message: "room created" });
+    return res.status(200).json({roomId:newRoom._id });
   } catch (error) {
     return res.status(500).json({ message: "error creating new room" });
   }
@@ -50,7 +50,7 @@ const joinRoom = async (req,res) => {
     }
     room.participants.push(newUser);
     await room.save();
-    return res.json({message:'successfully joined'});
+    return res.json({roomId:room._id });
 
   } catch (error) {
     console.log(error);

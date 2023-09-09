@@ -9,6 +9,8 @@ import {
   signUserIn,
   signUserUp,
 } from "./apiServices";
+import { useContext } from "react";
+import { SocketContext } from "../context/SocketContext";
 
 //auth queries
 export const useSignUp = () => {
@@ -32,25 +34,38 @@ export const useLogOut = () => {
   return useMutation(logUserOut, {
     onSuccess: () => {
       queryClient.invalidateQueries(["currentUser"]);
-      queryClient.removeQueries(["rooms"])
+      queryClient.removeQueries(["rooms"]);
     },
   });
 };
 
 //room queries
 export const useCreateRooom = () => {
-  return useMutation(createRoom);
+  const { socket } = useContext(SocketContext);
+  return useMutation(createRoom, {
+    onSuccess: (data) => {
+      const {roomId}=data?.data
+      socket.emit('joinORcreate-new-room',roomId)
+    }
+  });
 };
 export const useGetRooms = () => {
   return useQuery("rooms", getRooms);
 };
 export const useJoinRoom = () => {
-  return useMutation(joinRoom);
+  const { socket } = useContext(SocketContext);
+
+  return useMutation(joinRoom, {
+    onSuccess: (data) => {
+      const {roomId}=data?.data
+      socket.emit('joinORcreate-new-room',roomId)
+    }
+  });
 };
 
 //message queries
 export const useGetMessages = (roomId) => {
-  return useQuery(["messages",roomId],()=> getMessages(roomId), {
-    refetchOnWindowFocus:false
+  return useQuery(["messages", roomId], () => getMessages(roomId), {
+    refetchOnWindowFocus: false,
   });
 };

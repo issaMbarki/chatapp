@@ -7,7 +7,10 @@ const leaveAllRooms =(socket)=>{
       }
     });
   }
-
+const joinORcreateNewRoom=(socket,roomId)=>{
+socket.join(roomId)
+}
   module.exports = {
- leaveAllRooms
+ leaveAllRooms,
+ joinORcreateNewRoom,
   };
