@@ -57,9 +57,10 @@ export const useJoinRoom = () => {
 
   return useMutation(joinRoom, {
     onSuccess: (data) => {
+      console.log('succes');
       const {roomId}=data?.data
       socket.emit('joinORcreate-new-room',roomId)
-    }
+    },
   });
 };
 

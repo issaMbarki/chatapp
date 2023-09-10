@@ -76,3 +76,22 @@ export const checkEmptyFields = (obj) => {
 
   return emptyFields;
 };
+export const checkRoomIdInput = (roomId) => {
+  if (!roomId) {
+    return "Room ID can't be empty";
+  } else if (roomId.length !== 7) {
+    return "Room ID should be 7 characters long";
+  } else if (!/^[a-zA-Z0-9]+$/.test(roomId)) {
+    return "Room ID can only contain alphanumeric characters";
+  }
+};
+export const checkRoomName = (roomName) => {
+  if (!roomName) {
+    return "Room name can't be empty";
+  } else if (roomName<4) {
+    return "Room name can't be less than 4 characters";
+  }else if (roomName.length > 50) {
+    return "Room name can't be more than 50 characters";
+  } 
+};
+

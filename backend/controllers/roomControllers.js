@@ -39,18 +39,18 @@ const joinRoom = async (req,res) => {
     const code =req.body.code
     const room = await Room.findOne({code}).exec();
     if (!room) {
-      return res.json({message:'not found'});
+      return res.status(404).json({message:'There is no room with this code'});
     }
     const isParticipantAlreadyInRoom = room.participants.includes(newUser);
     if (isParticipantAlreadyInRoom) {
-      return res.json({message:'already in'})
+      return res.status(409).json({message:'You are already in this room'})
     }
     if (room.participants.length >= room.allowedUsers) {
-       return res.json({message:'room is full'})
+       return res.status(403).json({message:'this room is full'})
     }
     room.participants.push(newUser);
     await room.save();
-    return res.json({roomId:room._id });
+    return res.status(200).json({roomId:room._id });
 
   } catch (error) {
     console.log(error);

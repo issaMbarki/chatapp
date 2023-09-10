@@ -1,21 +1,49 @@
-import { Button, Grid, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  FormHelperText,
+  Grid,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import home from "../assets/home.svg";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CreateRoomDialog from "../components/create-join-room/CreateRoomDialog";
 import { useJoinRoom } from "../api/reactQuery";
+import { checkRoomIdInput } from "../utils/checkInputs";
 
 export default function PrivateRoom() {
+  //I seperated the server error message and invalid input message , for better UX
+  const [roomError, setRoomError] = useState({
+    serverError: "",
+    inputError: "",
+  });
   const [open, setOpen] = useState(false);
   const [roomCode, setRoomCode] = useState("");
-  const { mutate: joinRoom, isLoading, data, isSuccess } = useJoinRoom();
+  const { mutate: joinRoom, isLoading, data, isError, error } = useJoinRoom();
   const handleJoinRoom = (e) => {
     e.preventDefault();
+    const error = checkRoomIdInput(roomCode);
+    if (error) {
+      setRoomError({ inputError: error });
+      return;
+    }
     joinRoom({ code: roomCode });
   };
 
-  if (isSuccess) {
-    const { message } = data?.data;
-  }
+  useEffect(() => {
+    if (isError) {
+      if (error?.response?.data) {
+        const { message } = error.response.data;
+        setRoomError({ serverError: message });
+      } else {
+        // TODO: handle error
+      }
+    }
+  }, [isError, error]);
+
   return (
     <>
       <Grid
@@ -41,33 +69,50 @@ export default function PrivateRoom() {
               Enter the room code below to join an existing room, or create a
               new room.
             </Typography>
-            <TextField
-              label="Room Code"
-              variant="outlined"
-              fullWidth
-              value={roomCode}
-              onChange={(e) => setRoomCode(e.target.value)}
-            />
-            <Button
-              variant="contained"
-              color="primary"
-              sx={{ mt: "1rem", mr: "1rem" }}
-              onClick={handleJoinRoom}
-            >
-              Join Room
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              sx={{ mt: "1rem" }}
-              onClick={() => setOpen(true)}
-            >
-              Create New Room
-            </Button>
+            <Box component="form">
+              <TextField
+                sx={{ mt: 1 }}
+                label="Room Code"
+                variant="outlined"
+                fullWidth
+                autoFocus
+                placeholder="e.g. aB1cD23"
+                value={roomCode}
+                error={!!roomError?.inputError}
+                helperText={roomError?.inputError}
+                onChange={(e) => {
+                  setRoomCode(e.target.value);
+                  setRoomError({});
+                }}
+              />
+              {roomError?.serverError && (
+                <FormHelperText variant="outlined">
+                  {roomError.serverError}
+                </FormHelperText>
+              )}
+
+              <Button
+                type="submit"
+                variant="contained"
+                sx={{ mt: "1rem", mr: "1rem" }}
+                onClick={handleJoinRoom}
+                disabled={isLoading}
+                startIcon={isLoading && <CircularProgress size={20} />}
+              >
+                {isLoading ? "Joining" : "Join Room"}
+              </Button>
+              <Button
+                variant="outlined"
+                sx={{ mt: "1rem" }}
+                onClick={() => setOpen(true)}
+              >
+                Create New Room
+              </Button>
+            </Box>
           </Paper>
         </Grid>
       </Grid>
-      <CreateRoomDialog open={open} setOpen={setOpen} />
+      {open && <CreateRoomDialog open={open} setOpen={setOpen} />}
     </>
   );
 }
