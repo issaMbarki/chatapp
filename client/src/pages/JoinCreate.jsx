@@ -22,7 +22,7 @@ export default function PrivateRoom() {
   });
   const [open, setOpen] = useState(false);
   const [roomCode, setRoomCode] = useState("");
-  const { mutate: joinRoom, isLoading, data, isError, error } = useJoinRoom();
+  const { mutate: joinRoom, isLoading, isError, error } = useJoinRoom();
   const handleJoinRoom = (e) => {
     e.preventDefault();
     const error = checkRoomIdInput(roomCode);

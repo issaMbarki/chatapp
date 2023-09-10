@@ -88,7 +88,7 @@ export const checkRoomIdInput = (roomId) => {
 export const checkRoomName = (roomName) => {
   if (!roomName) {
     return "Room name can't be empty";
-  } else if (roomName<4) {
+  } else if (roomName.length<4) {
     return "Room name can't be less than 4 characters";
   }else if (roomName.length > 50) {
     return "Room name can't be more than 50 characters";

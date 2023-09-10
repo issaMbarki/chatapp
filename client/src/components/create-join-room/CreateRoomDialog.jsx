@@ -17,7 +17,6 @@ import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Grid";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import {
-  Box,
   CircularProgress,
   ClickAwayListener,
   Tooltip,
@@ -36,16 +35,11 @@ export default function CreateRoomDialog({ open, setOpen }) {
   const [Titleopen, setTitleOpen] = useState(false);
   const [roomError, setRoomError] = useState("");
 
-  const {
-    mutate: createRoom,
-    isLoading,
-    isError,
-    isSuccess,
-  } = useCreateRooom();
-
+  const { mutate: createRoom, isLoading, isError } = useCreateRooom();
   const handleCreateRoom = (e) => {
     e.preventDefault();
     const error = checkRoomName(roomName);
+
     if (error) {
       setRoomError(error);
       return;
@@ -53,12 +47,10 @@ export default function CreateRoomDialog({ open, setOpen }) {
     createRoom({ type: roomType, allowedUsers, name: roomName });
   };
 
-  if (isSuccess) {
-  
-  }
   if (isError) {
     return "error";
   }
+
   return (
     <Dialog
       open={open}
@@ -71,12 +63,12 @@ export default function CreateRoomDialog({ open, setOpen }) {
     >
       <DialogTitle display="flex" alignItems="center" gap="1rem">
         Create new private room
-        <ClickAwayListener onClickAway={()=>setTitleOpen(false)}>
+        <ClickAwayListener onClickAway={() => setTitleOpen(false)}>
           <Tooltip
             PopperProps={{
               disablePortal: true,
             }}
-            onClose={()=>setTitleOpen(false)}
+            onClose={() => setTitleOpen(false)}
             open={Titleopen}
             disableFocusListener
             disableHoverListener
@@ -94,7 +86,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
             }
           >
             <InfoOutlined
-              onClick={()=>setTitleOpen(true)}
+              onClick={() => setTitleOpen(true)}
               sx={{ cursor: "pointer" }}
             >
               Click
@@ -114,8 +106,11 @@ export default function CreateRoomDialog({ open, setOpen }) {
                 autoFocus
                 fullWidth
                 value={roomName}
+                error={!!roomError}
+                helperText={roomError}
                 onChange={(e) => {
                   setRoomName(e.target.value);
+                  setRoomError("");
                 }}
               />
             </Grid>
