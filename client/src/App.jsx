@@ -9,6 +9,7 @@ import { UserContextProvider } from "./context/UserContext";
 import { PrivateRoutes, VisitorRoutes } from "./auth/ProtectedRoutes";
 import { ThemeContextProvider } from "./context/ThemeContext";
 import { SocketContextProvider } from './context/SocketContext';
+import { NotFound404 } from './pages/NotFound404';
 function App() {
   const queryClient = new QueryClient();
 
@@ -33,7 +34,7 @@ function App() {
                 <Route path="/join-create" element={<JoinCreate />} />
                 <Route path="/private-rooms" element={<PrivateRoom />} />
               </Route>
-              
+              <Route path="/*" element={<NotFound404 />} />
             </Routes>
           </BrowserRouter>
         </ThemeContextProvider>
