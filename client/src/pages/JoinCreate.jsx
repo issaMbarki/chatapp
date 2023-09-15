@@ -4,6 +4,7 @@ import {
   CircularProgress,
   FormHelperText,
   Grid,
+  IconButton,
   Paper,
   TextField,
   Typography,
@@ -13,6 +14,7 @@ import { useEffect, useState } from "react";
 import CreateRoomDialog from "../components/create-join-room/CreateRoomDialog";
 import { useJoinRoom } from "../api/reactQuery";
 import { checkRoomIdInput } from "../utils/checkInputs";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
 export default function PrivateRoom() {
   //I seperated the server error message and invalid input message , for better UX
@@ -86,9 +88,14 @@ export default function PrivateRoom() {
                 }}
               />
               {roomError?.serverError && (
-                <FormHelperText variant="outlined">
-                  {roomError.serverError}
-                </FormHelperText>
+                <Box sx={{ display: "flex", alignItems: "center" }}>
+                  <IconButton>
+                    <InfoOutlinedIcon />
+                  </IconButton>
+                  <FormHelperText variant="outlined" sx={{ ml: 0.5 }}>
+                    {roomError.serverError}
+                  </FormHelperText>
+                </Box>
               )}
 
               <Button
