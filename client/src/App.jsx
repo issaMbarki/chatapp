@@ -1,6 +1,6 @@
-import './App.css';
-import { QueryClient, QueryClientProvider} from "react-query";
-import {ReactQueryDevtools} from 'react-query/devtools'
+import "./App.css";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 import Authentication from "./pages/Authentication";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import JoinCreate from "./pages/JoinCreate";
@@ -8,15 +8,15 @@ import PrivateRoom from "./pages/PrivateRoom";
 import { UserContextProvider } from "./context/UserContext";
 import { PrivateRoutes, VisitorRoutes } from "./auth/ProtectedRoutes";
 import { ThemeContextProvider } from "./context/ThemeContext";
-import { SocketContextProvider } from './context/SocketContext';
-import { NotFound404 } from './pages/NotFound404';
+import { SocketContextProvider } from "./context/SocketContext";
+import { NotFound404 } from "./pages/errors/NotFound404";
 function App() {
   const queryClient = new QueryClient();
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <UserContextProvider>
-        <ThemeContextProvider>
+    <ThemeContextProvider>
+      <QueryClientProvider client={queryClient}>
+        <UserContextProvider>
           <BrowserRouter>
             <Routes>
               <Route element={<VisitorRoutes />}>
@@ -29,18 +29,23 @@ function App() {
                   element={<Authentication formType="signUp" />}
                 />
               </Route>
-              
-              <Route element={ <SocketContextProvider><PrivateRoutes /></SocketContextProvider>}>
+              <Route
+                element={
+                  <SocketContextProvider>
+                    <PrivateRoutes />
+                  </SocketContextProvider>
+                }
+              >
                 <Route path="/join-create" element={<JoinCreate />} />
                 <Route path="/private-rooms" element={<PrivateRoom />} />
               </Route>
               <Route path="/*" element={<NotFound404 />} />
             </Routes>
           </BrowserRouter>
-        </ThemeContextProvider>
-      </UserContextProvider>
-      <ReactQueryDevtools initialIsOpen={false}/>
-    </QueryClientProvider>
+        </UserContextProvider>
+        <ReactQueryDevtools initialIsOpen={false} />
+      </QueryClientProvider>
+    </ThemeContextProvider>
   );
 }
 

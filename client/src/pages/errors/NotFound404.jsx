@@ -1,6 +1,6 @@
 import { Box, Button, Typography } from "@mui/material";
-import notFound from "../assets/not_found.svg";
-import notFoundDark from '../assets/dark-mode/not_found_dark.svg'
+import notFound from "../../assets/not_found.svg";
+import notFoundDark from '../../assets/dark-mode/not_found_dark.svg'
 import { useNavigate } from "react-router-dom";
 export const NotFound404 = () => {
   const navigate = useNavigate();
