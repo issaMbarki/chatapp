@@ -1,15 +1,12 @@
-import { useQueryClient } from "react-query";
 import { useLogOut } from "../../api/reactQuery";
 import { CircularProgress, ListItemIcon, MenuItem } from "@mui/material";
 import { Logout } from "@mui/icons-material";
 export default function LogOutMenuItem() {
-  const queryClient = useQueryClient();
   const {
     mutate: logUserOut,
     isLoading,
     isError,
     error,
-    isSuccess,
   } = useLogOut();
   const handleLogOut = () => {
     logUserOut();

@@ -13,8 +13,7 @@ import { useSignIn } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IsInvalidInput, checkEmptyFields } from "../../utils/checkInputs";
-import { useQueryClient } from "react-query";
-// TODO remove, this demo shouldn't need to reset the theme.
+// TODO remove, this demo shouldn't need to rFeset the theme.
 
 function Copyright(props) {
   return (
@@ -25,10 +24,10 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link component={NavLink} color="inherit" to="https://mui.com/">
+      <Link component={NavLink} color="inherit" to="#">
         Your Website
       </Link>{" "}
-      {new Date().getFullYear()}
+      F{new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -42,11 +41,9 @@ export default function SignInSide() {
   const {
     mutate: signUserIn,
     isLoading,
-    isSuccess,
     error,
     isError,
   } = useSignIn();
-  const queryClient = useQueryClient();
 
   //handle inputs changes
   const handlChange = (e) => {
@@ -70,15 +67,12 @@ export default function SignInSide() {
     signUserIn(formData);
   };
 
-  // if (isSuccess) {
-  //   queryClient.invalidateQueries(["currentUser"]);
-  // }
   useEffect(() => {
     if (isError) {
       const { emailUsername, password } = error?.response?.data;
       setFormErrors((prev) => ({ ...prev, ...{ emailUsername, password } }));
     }
-  }, [isError, error, isSuccess]);
+  }, [isError, error]);
 
   return (
     <>
@@ -130,7 +124,7 @@ export default function SignInSide() {
         <Grid container>
           <Grid item xs>
             <Link component={NavLink} to="#">
-            Forgot password?
+              Forgot password?
             </Link>
           </Grid>
           <Grid item>
