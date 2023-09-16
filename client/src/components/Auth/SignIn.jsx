@@ -1,5 +1,4 @@
 import {
-  Button,
   TextField,
   FormControlLabel,
   Checkbox,
@@ -7,12 +6,12 @@ import {
   Grid,
   Link,
   Typography,
-  CircularProgress,
 } from "@mui/material";
 import { useSignIn } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IsInvalidInput, checkEmptyFields } from "../../utils/checkInputs";
+import { ButtonLoad } from "../loading/ButtonLoad";
 // TODO remove, this demo shouldn't need to rFeset the theme.
 
 function Copyright(props) {
@@ -38,12 +37,7 @@ export default function SignInSide() {
     password: "",
   });
   const [formErrors, setFormErrors] = useState({});
-  const {
-    mutate: signUserIn,
-    isLoading,
-    error,
-    isError,
-  } = useSignIn();
+  const { mutate: signUserIn, isLoading, error, isError } = useSignIn();
 
   //handle inputs changes
   const handlChange = (e) => {
@@ -68,9 +62,11 @@ export default function SignInSide() {
   };
 
   useEffect(() => {
-    if (isError) {
+    if (isError &&error?.response?.data) {
       const { emailUsername, password } = error?.response?.data;
-      setFormErrors((prev) => ({ ...prev, ...{ emailUsername, password } }));
+      setTimeout(() => {
+        setFormErrors((prev) => ({ ...prev, ...{ emailUsername, password } }));        
+      }, 700);
     }
   }, [isError, error]);
 
@@ -111,16 +107,15 @@ export default function SignInSide() {
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
         />
-        <Button
+        <ButtonLoad
+          isLoading={isLoading}
+          text="Sign in"
+          loadingText="Signing in"
           type="submit"
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
-          disabled={isLoading}
-          startIcon={isLoading && <CircularProgress size={20} />}
-        >
-          {isLoading ? "signing in..." : "sign in"}
-        </Button>
+        />
         <Grid container>
           <Grid item xs>
             <Link component={NavLink} to="#">

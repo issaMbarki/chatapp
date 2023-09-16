@@ -1,17 +1,9 @@
-import {
-  Button,
-  TextField,
-  Box,
-  Grid,
-  Typography,
-  CircularProgress,
-  Link,
-} from "@mui/material";
+import { TextField, Box, Grid, Typography, Link } from "@mui/material";
 import { useSignUp } from "../../api/reactQuery";
 import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IsInvalidInput, checkEmptyFields } from "../../utils/checkInputs";
-// TODO remove, this demo shouldn't need to reset the theme.
+import { ButtonLoad } from "../loading/ButtonLoad";
 
 function Copyright(props) {
   return (
@@ -22,7 +14,7 @@ function Copyright(props) {
       {...props}
     >
       {"Copyright © "}
-      <Link component={NavLink} color="inherit" to="https://mui.com/">
+      <Link component={NavLink} color="inherit" to="#">
         Your Website
       </Link>{" "}
       {new Date().getFullYear()}
@@ -40,14 +32,7 @@ export default function SignInSide() {
   });
   const [formErrors, setFormErrors] = useState({});
 
-  const {
-    mutate: signUserUp,
-    data,
-    isLoading,
-    isSuccess,
-    error,
-    isError,
-  } = useSignUp();
+  const { mutate: signUserUp, data, isLoading, error, isError } = useSignUp();
   //handle inputs changes
   const handlChange = (e) => {
     const newForm = { ...formData };
@@ -73,23 +58,13 @@ export default function SignInSide() {
     signUserUp(formData);
   };
   useEffect(() => {
-    if (isSuccess) {
-      console.log(data);
-    }
-    if (isError) {
+    if (isError && error?.response?.data) {
       const { username, email } = error?.response?.data;
-      if (username && email) {
-        setFormErrors((prevErrors) => ({
-          ...prevErrors,
-          ...{ username, email },
-        }));
-      } else if (username) {
-        setFormErrors((prevErrors) => ({ ...prevErrors, ...{ username } }));
-      } else if (email) {
-        setFormErrors((prevErrors) => ({ ...prevErrors, ...{ email } }));
-      } else console.log(error);
+      setTimeout(() => {
+        setFormErrors((prevErrors) => ({ ...prevErrors, username, email }));
+      }, 700);
     }
-  }, [isSuccess, isLoading, isError, data, error]);
+  }, [isLoading, isError, data, error]);
 
   return (
     <>
@@ -166,20 +141,18 @@ export default function SignInSide() {
             />
           </Grid>
         </Grid>
-        <Button
+        <ButtonLoad
+          isLoading={isLoading}
+          text="Sign up"
+          loadingText="Signing up"
           type="submit"
           fullWidth
           variant="contained"
           sx={{ mt: 3, mb: 2 }}
-          disabled={isLoading}
-          startIcon={isLoading && <CircularProgress size={20} />}
-        >
-          {isLoading ? "Signing up..." : "Sign Up"}
-        </Button>
-
+        />
         <Grid container justifyContent="flex-end">
           <Grid item>
-            <Link component={NavLink } to="/">
+            <Link component={NavLink} to="/">
               Already have an account? Sign in
             </Link>
           </Grid>

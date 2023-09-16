@@ -16,13 +16,10 @@ import MenuItem from "@mui/material/MenuItem";
 import InputLabel from "@mui/material/InputLabel";
 import Grid from "@mui/material/Grid";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import {
-  CircularProgress,
-  ClickAwayListener,
-  Tooltip,
-} from "@mui/material";
+import { ClickAwayListener, Tooltip } from "@mui/material";
 import { useCreateRooom } from "../../api/reactQuery";
 import { checkRoomName } from "../../utils/checkInputs";
+import { ButtonLoad } from "../loading/ButtonLoad";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -39,7 +36,6 @@ export default function CreateRoomDialog({ open, setOpen }) {
   const handleCreateRoom = (e) => {
     e.preventDefault();
     const error = checkRoomName(roomName);
-
     if (error) {
       setRoomError(error);
       return;
@@ -155,13 +151,12 @@ export default function CreateRoomDialog({ open, setOpen }) {
         <Button sx={{ color: "#bebebe" }} onClick={() => setOpen(false)}>
           Cancel
         </Button>
-        <Button
-          disabled={isLoading}
-          startIcon={isLoading && <CircularProgress size={20} />}
+        <ButtonLoad
+          isLoading={isLoading}
+          text="Create"
+          loadingText="Creating"
           onClick={handleCreateRoom}
-        >
-          {isLoading ? "Creating" : "Create"}
-        </Button>
+        />
       </DialogActions>
     </Dialog>
   );

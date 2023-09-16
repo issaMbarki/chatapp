@@ -1,10 +1,8 @@
 import {
   Box,
   Button,
-  CircularProgress,
   FormHelperText,
   Grid,
-  IconButton,
   Paper,
   TextField,
   Typography,
@@ -15,6 +13,7 @@ import CreateRoomDialog from "../components/create-join-room/CreateRoomDialog";
 import { useJoinRoom } from "../api/reactQuery";
 import { checkRoomIdInput } from "../utils/checkInputs";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { ButtonLoad } from "../components/loading/ButtonLoad";
 
 export default function PrivateRoom() {
   //I seperated the server error message and invalid input message , for better UX
@@ -36,16 +35,14 @@ export default function PrivateRoom() {
   };
 
   useEffect(() => {
-    if (isError) {
-      if (error?.response?.data) {
+    if (isError&&error?.response?.data) {   
         const { message } = error.response.data;
-        setRoomError({ serverError: message });
-      } else {
-        // TODO: handle error
-      }
+        setTimeout(() => {
+          setRoomError({ serverError: message });
+        }, 700);  
     }
   }, [isError, error]);
-
+  // TODO: handle error
   return (
     <>
       <Grid
@@ -88,26 +85,22 @@ export default function PrivateRoom() {
                 }}
               />
               {roomError?.serverError && (
-                <Box sx={{ display: "flex", alignItems: "center" }}>
-                  <IconButton>
-                    <InfoOutlinedIcon />
-                  </IconButton>
-                  <FormHelperText variant="outlined" sx={{ ml: 0.5 }}>
+                <Box sx={{ display: "flex", alignItems: "center", mt: 1 }}>
+                  <InfoOutlinedIcon />
+                  <FormHelperText variant="outlined" sx={{ ml: 1 }}>
                     {roomError.serverError}
                   </FormHelperText>
                 </Box>
               )}
-
-              <Button
+              <ButtonLoad
+                isLoading={isLoading}
+                text="Join Room"
+                loadingText="Joining"
                 type="submit"
                 variant="contained"
                 sx={{ mt: "1rem", mr: "1rem" }}
                 onClick={handleJoinRoom}
-                disabled={isLoading}
-                startIcon={isLoading && <CircularProgress size={20} />}
-              >
-                {isLoading ? "Joining" : "Join Room"}
-              </Button>
+              />
               <Button
                 variant="outlined"
                 sx={{ mt: "1rem" }}

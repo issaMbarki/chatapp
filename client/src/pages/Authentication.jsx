@@ -16,6 +16,7 @@ export default function Authentication({formType}) {
           sm={4}
           md={7}
           sx={{
+            height:'100vh',
             backgroundImage: `url(${home})`,
             backgroundRepeat: "no-repeat",
             backgroundColor: (t) =>
@@ -23,7 +24,7 @@ export default function Authentication({formType}) {
                 ? t.palette.grey[50]
                 : t.palette.grey[900],
             backgroundSize: "contain",
-            backgroundPosition: "center",
+            backgroundPosition: "center",      
           }}
         />
         <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
