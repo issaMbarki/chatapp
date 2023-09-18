@@ -1,4 +1,4 @@
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, CircularProgress, Grid, IconButton, Typography } from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useTheme } from "@emotion/react";
@@ -9,6 +9,7 @@ import { SocketContext } from "../../context/SocketContext";
 import { useGetMessages } from "../../api/reactQuery";
 import { UserContext } from "../../context/UserContext";
 import { NoMessages } from "./NoMessages";
+import useLoader from "../../hooks/useLoader";
 
 export const Chat = ({ currentRoom }) => {
   
@@ -47,17 +48,16 @@ export const Chat = ({ currentRoom }) => {
     };
   }, [socket, messages]);
 
+  const showLoader = useLoader(isLoading, 600);
   // Scroll to the end of the chat box when the component is rendered or when the box resized
   useEffect(() => {
-    if (!isLoading) {
-      chatBoxRef.current.scrollTop = chatBoxRef.current.scrollHeight;
+    if (!isLoading&&!showLoader) {
+      chatBoxRef.current.scrollTop = chatBoxRef?.current?.scrollHeight;
     }
-  }, [messageInputHeight, isLoading]);
+  }, [messageInputHeight, isLoading,showLoader]);
+
   if (isError) {
     return "error";
-  }
-  if (isLoading) {
-    return "getting messages...";
   }
   return (
     <Grid item sm={8} xs={12}  sx={{ display: { xs: currentRoom ? "block" : "none",sm:"block" } }}>
@@ -98,10 +98,12 @@ export const Chat = ({ currentRoom }) => {
               overflow: "auto",
               display: "flex",
               flexDirection: "column-reverse",
+              alignItems:isLoading||showLoader?"center ":"",
+              justifyContent:isLoading||showLoader?"center":""
             }}
           >
             <Box>
-              {messages.length
+              {isLoading||showLoader?<CircularProgress />: messages.length
                 ? messages.map((message) => (
                     <Box
                       key={message._id}

@@ -13,7 +13,7 @@ export const RoomsLoading = ({ contentHeight }) => {
           boxShadow: 1,
           backgroundColor: theme.palette.listBackGround.main,
           px: 2,
-          py: 2,
+          py: 1.5,
         }}
       >
         <Skeleton variant="rounded" height="20%" animation="pulse" />

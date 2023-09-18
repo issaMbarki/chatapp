@@ -12,7 +12,7 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
   const contentHeight = `calc(98vh - ${appBarHeight}px)`;
   const { isLoading, data } = useGetRooms();
   const rooms = data?.data;
-  const showLoader = useLoader(isLoading, 1000);
+  const showLoader = useLoader(isLoading, 600);
   if (isLoading || showLoader) {
     return <RoomsLoading contentHeight={contentHeight} />;
   }
