@@ -1,7 +1,11 @@
 import {  Grid, Typography } from "@mui/material";
 import startConv from "../../assets/start_conv.svg";
+import startConvDark from "../../assets/dark-mode/start_conv_dark.svg";
+import { useTheme } from "@emotion/react";
 
 export const NoConv = () => {
+  const theme=useTheme()
+  const currentTheme=theme.palette.mode
   return (
     <Grid
       item
@@ -14,7 +18,7 @@ export const NoConv = () => {
         gap: 3,
       }}
     >
-      <img src={startConv} alt="start conversation" style={{ width: "60%" }} />
+      <img src={currentTheme==="dark"?startConvDark:startConv} alt="start conversation" style={{ width: "60%" }} />
       <Typography variant="h6" sx={{ textAlign: "center" }}>
         Welcome! Choose a room to begin your conversation.
       </Typography>

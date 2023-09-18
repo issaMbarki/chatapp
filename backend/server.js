@@ -18,7 +18,11 @@ app.use(cookieParser());
 // Enable CORS
 app.use(
   cors({
-    origin: ["http://localhost:3000", "http://192.168.43.228:3000"],
+    origin: [
+      process.env.FRONT_SERVER_URI,
+      process.env.FRONT_SERVER_ISSAM_URI,
+      process.env.FRONT_SERVER_ZAKI_URI,
+    ],
     credentials: true,
   })
 );
@@ -32,7 +36,11 @@ app.use("/message", messageRoutes);
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:3000", "http://192.168.43.228:3000"],
+    origin: [
+      process.env.FRONT_SERVER_URI,
+      process.env.FRONT_SERVER_ISSAM_URI,
+      process.env.FRONT_SERVER_ZAKI_URI,
+    ],
   },
 });
 io.on("connection", (socket) => {
