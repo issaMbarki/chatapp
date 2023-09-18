@@ -8,12 +8,14 @@ import {
   Typography,
 } from "@mui/material";
 import home from "../assets/home.svg";
+import homeDark from "../assets/dark-mode/home_dark.svg";
 import { useEffect, useState } from "react";
 import CreateRoomDialog from "../components/create-join-room/CreateRoomDialog";
 import { useJoinRoom } from "../api/reactQuery";
 import { checkRoomIdInput } from "../utils/checkInputs";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { ButtonLoad } from "../components/loading/ButtonLoad";
+import { useTheme } from "@emotion/react";
 
 export default function PrivateRoom() {
   //I seperated the server error message and invalid input message , for better UX
@@ -21,6 +23,8 @@ export default function PrivateRoom() {
     serverError: "",
     inputError: "",
   });
+  const theme = useTheme();
+  const currentThem=theme.palette.mode
   const [open, setOpen] = useState(false);
   const [roomCode, setRoomCode] = useState("");
   const { mutate: joinRoom, isLoading, isError, error } = useJoinRoom();
@@ -52,7 +56,7 @@ export default function PrivateRoom() {
           direction: "column",
           alignItems: "center",
           justifyContent: "center",
-          backgroundImage: `url(${home})`,
+          backgroundImage: `url(${currentThem==="dark"?homeDark:home})`,
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
           backgroundPosition: "left",
