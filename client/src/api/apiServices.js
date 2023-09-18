@@ -12,6 +12,5 @@ export const joinRoom = (data) => api.post("/room/join", data);
 
 //message routes
 export const getMessages = (roomId) => {
-  console.log(roomId);
-  return api.get("/message/get",{ params: { roomId } });
+  return api.get("/message/get", { params: { roomId } });
 };

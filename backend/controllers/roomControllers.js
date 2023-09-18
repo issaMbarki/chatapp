@@ -16,7 +16,7 @@ const createRoom = async (req, res) => {
     });
 
     await newRoom.save();
-    return res.status(200).json({roomId:newRoom._id });
+    return res.status(200).json({ roomId: newRoom._id });
   } catch (error) {
     return res.status(500).json({ message: "error creating new room" });
   }
@@ -27,30 +27,31 @@ const getRooms = async (req, res) => {
     const rooms = await Room.find({ participants: currentUser })
       .populate("participants")
       .exec();
-   return  res.status(200).json(rooms);
+    return res.status(200).json(rooms);
   } catch (error) {
     return res.status(500).json({ message: "error getting the rooms" });
   }
 };
-const joinRoom = async (req,res) => {
+const joinRoom = async (req, res) => {
   try {
-    const newUser=req.id
-    const code =req.body.code
-    const room = await Room.findOne({code}).exec();
+    const newUser = req.id;
+    const code = req.body.code;
+    const room = await Room.findOne({ code }).populate("participants").exec();
     if (!room) {
-      return res.status(404).json({message:'There is no room with this code'});
+      return res
+        .status(404)
+        .json({ message: "There is no room with this code" });
     }
     const isParticipantAlreadyInRoom = room.participants.includes(newUser);
     if (isParticipantAlreadyInRoom) {
-      return res.status(409).json({message:'You are already in this room'})
+      return res.status(409).json({ message: "You are already in this room" });
     }
     if (room.participants.length >= room.allowedUsers) {
-       return res.status(403).json({message:'this room is full'})
+      return res.status(403).json({ message: "this room is full" });
     }
     room.participants.push(newUser);
     await room.save();
-    return res.status(200).json({roomId:room._id });
-
+    return res.status(200).json({ room });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ message: "error joining the room" });
@@ -58,16 +59,14 @@ const joinRoom = async (req,res) => {
 };
 const deleteRoom = () => {};
 const updateRoom = () => {};
-const joinRooms = async({userId},socket) => {
-try {
-  const rooms = await Room.find({ participants: userId },'_id').exec();
-  rooms.forEach(room=>socket.join(room.id))
-} catch (error) {
-  console.log("Error getting rooms:", error);
-  
-}
+const joinRooms = async ({ userId }, socket) => {
+  try {
+    const rooms = await Room.find({ participants: userId }, "_id").exec();
+    rooms.forEach((room) => socket.join(room.id));
+  } catch (error) {
+    console.log("Error getting rooms:", error);
+  }
 };
-
 
 module.exports = {
   createRoom,

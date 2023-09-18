@@ -11,6 +11,7 @@ import {
 } from "./apiServices";
 import { useContext } from "react";
 import { SocketContext } from "../context/SocketContext";
+import { useNavigate } from "react-router-dom";
 
 //auth queries
 export const useSignUp = () => {
@@ -44,9 +45,9 @@ export const useCreateRooom = () => {
   const { socket } = useContext(SocketContext);
   return useMutation(createRoom, {
     onSuccess: (data) => {
-      const {roomId}=data?.data
-      socket.emit('joinORcreate-new-room',roomId)
-    }
+      const { roomId } = data?.data;
+      socket.emit("joinORcreate-new-room", roomId);
+    },
   });
 };
 export const useGetRooms = () => {
@@ -54,12 +55,16 @@ export const useGetRooms = () => {
 };
 export const useJoinRoom = () => {
   const { socket } = useContext(SocketContext);
-
+  const navigate = useNavigate();
   return useMutation(joinRoom, {
     onSuccess: (data) => {
-      console.log('succes');
-      const {roomId}=data?.data
-      socket.emit('joinORcreate-new-room',roomId)
+      const { _id: roomId } = data.data.room;
+      socket.emit("joinORcreate-new-room", roomId);
+      navigate("/private-rooms", {
+        state: {
+          newJoinedRoom: data.data.room,
+        },
+      });
     },
   });
 };
