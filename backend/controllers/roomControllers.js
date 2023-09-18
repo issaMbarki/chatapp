@@ -1,5 +1,4 @@
 const Room = require("../models/room");
-const Message = require("../models/message");
 const generateCode = require("../helpers/geneateCode");
 
 const createRoom = async (req, res) => {
