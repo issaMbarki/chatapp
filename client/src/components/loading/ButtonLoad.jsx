@@ -1,24 +1,16 @@
 import { Button, CircularProgress } from "@mui/material";
-import  { useState, useEffect } from "react";
+import useLoader from "../../hooks/useLoader";
 
 export const ButtonLoad = ({ isLoading,text,loadingText, ...props }) => {
-  const [showLoading, setShowLoading] = useState(false);
-  useEffect(() => {
-    if (isLoading) {
-      setShowLoading(true);
-       setTimeout(() => {
-        setShowLoading(false);
-      }, 1000); // Minimum loading time of 1 second
-    }
-  }, [isLoading]);
+  const showLoader = useLoader(isLoading, 1000);
 
   return (
     <Button
-      disabled={showLoading}
-      startIcon={showLoading&& <CircularProgress size={20}/>}
+      disabled={showLoader}
+      startIcon={showLoader&& <CircularProgress size={20}/>}
       {...props}
     >
-      {showLoading ? loadingText : text}
+      {showLoader ? loadingText : text}
     </Button>
   );
 };

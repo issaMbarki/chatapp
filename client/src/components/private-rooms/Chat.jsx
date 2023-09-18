@@ -10,6 +10,7 @@ import { useGetMessages } from "../../api/reactQuery";
 import { UserContext } from "../../context/UserContext";
 
 export const Chat = ({ currentRoom }) => {
+  
   const theme = useTheme();
   const headerHeight = theme.mixins.toolbar.minHeight;
   const contentHeight = `calc(98vh - ${headerHeight}px)`;
@@ -58,7 +59,7 @@ export const Chat = ({ currentRoom }) => {
     return "getting messages...";
   }
   return (
-    <Grid item xs={currentRoom ? 12 : 0} sm={8}>
+    <Grid item sm={8}  sx={{ display: { xs: currentRoom ? "block" : "none" } }}>
       <Box
         sx={{
           height: contentHeight,

@@ -18,13 +18,13 @@ import { ButtonLoad } from "../components/loading/ButtonLoad";
 import { useTheme } from "@emotion/react";
 
 export default function PrivateRoom() {
+  const theme = useTheme();
+  const currentThem=theme.palette.mode
   //I seperated the server error message and invalid input message , for better UX
   const [roomError, setRoomError] = useState({
     serverError: "",
     inputError: "",
   });
-  const theme = useTheme();
-  const currentThem=theme.palette.mode
   const [open, setOpen] = useState(false);
   const [roomCode, setRoomCode] = useState("");
   const { mutate: joinRoom, isLoading, isError, error } = useJoinRoom();
