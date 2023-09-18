@@ -6,7 +6,7 @@ import { useGetRooms } from "../../api/reactQuery";
 import { RoomsLoading } from "../loading/RoomsLoading";
 import useLoader from "../../hooks/useLoader";
 
-export const Rooms = ({ setCurrentRoom }) => {
+export const Rooms = ({ setCurrentRoom, currentRoom }) => {
   const theme = useTheme();
   const appBarHeight = theme.mixins.toolbar.minHeight;
   const contentHeight = `calc(98vh - ${appBarHeight}px)`;
@@ -17,7 +17,12 @@ export const Rooms = ({ setCurrentRoom }) => {
     return <RoomsLoading contentHeight={contentHeight} />;
   }
   return (
-    <Grid item xs={12} sm={4}>
+    <Grid
+      item
+      xs={12}
+      sm={4}
+      sx={{ display: { xs: !currentRoom ? "block" : "none" , sm: "block" }}}
+    >
       <Box
         sx={{
           height: contentHeight,

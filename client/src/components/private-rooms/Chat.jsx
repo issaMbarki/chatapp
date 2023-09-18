@@ -8,6 +8,7 @@ import { useEffect, useRef, useState, useContext } from "react";
 import { SocketContext } from "../../context/SocketContext";
 import { useGetMessages } from "../../api/reactQuery";
 import { UserContext } from "../../context/UserContext";
+import { NoMessages } from "./NoMessages";
 
 export const Chat = ({ currentRoom }) => {
   
@@ -59,7 +60,7 @@ export const Chat = ({ currentRoom }) => {
     return "getting messages...";
   }
   return (
-    <Grid item sm={8}  sx={{ display: { xs: currentRoom ? "block" : "none" } }}>
+    <Grid item sm={8} xs={12}  sx={{ display: { xs: currentRoom ? "block" : "none",sm:"block" } }}>
       <Box
         sx={{
           height: contentHeight,
@@ -123,7 +124,7 @@ export const Chat = ({ currentRoom }) => {
                       </Box>
                     </Box>
                   ))
-                : "start chating"}
+                : <NoMessages/>}
             </Box>
           </Box>
           <MessageInput currentRoomId={currentRoom._id} setMessageInputHeight={setMessageInputHeight} />
