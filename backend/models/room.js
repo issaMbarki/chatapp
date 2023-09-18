@@ -13,11 +13,6 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  type: {
-    type: String,
-    enum: ["locked", "open"],
-    default: "open",
-  },
   lastMessageTimestamp: {
     type: Date,
   },

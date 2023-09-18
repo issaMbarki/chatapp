@@ -7,6 +7,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import TextField from "@mui/material/TextField";
 import Slide from "@mui/material/Slide";
 import { forwardRef, useState } from "react";
+// eslint-disable-next-line
 import LockIcon from "@mui/icons-material/Lock";
 import PeopleIcon from "@mui/icons-material/People";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
@@ -27,7 +28,6 @@ const Transition = forwardRef(function Transition(props, ref) {
 
 export default function CreateRoomDialog({ open, setOpen }) {
   const [allowedUsers, setAllowedUsers] = useState(2);
-  const [roomType, setRoomType] = useState("open");
   const [roomName, setRoomName] = useState("");
   const [Titleopen, setTitleOpen] = useState(false);
   const [roomError, setRoomError] = useState("");
@@ -40,7 +40,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
       setRoomError(error);
       return;
     }
-    createRoom({ type: roomType, allowedUsers, name: roomName });
+    createRoom({ allowedUsers, name: roomName });
   };
 
   if (isError) {
@@ -74,10 +74,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
                 Participants: Specify the maximum number of users allowed in the
                 room.
                 <br />
-                Room type: An open room allows anyone with room code to join,
-                while a locked room requires validation from you.
-                <br />
-                You can always change these settings after creating the room.
+                You can always change this setting after creating the room.
               </>
             }
           >
@@ -92,15 +89,14 @@ export default function CreateRoomDialog({ open, setOpen }) {
       </DialogTitle>
       <DialogContent sx={{ pb: 0 }}>
         <DialogContentText id="alert-dialog-slide-description" component="div">
-          <Grid container spacing={3}>
-            <Grid item display="flex" alignItems="center" xs={12}>
+          <Grid container spacing={2}>
+            <Grid item display="flex" alignItems="center" xs={12} sm={6}>
               <BorderColorIcon />
               <TextField
                 sx={{ m: 1 }}
                 label="Room name"
                 name="roomName"
                 autoFocus
-                fullWidth
                 value={roomName}
                 error={!!roomError}
                 helperText={roomError}
@@ -110,9 +106,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
                 }}
               />
             </Grid>
-          </Grid>
-          <Grid container spacing={3}>
-            <Grid item display="flex" alignItems="center">
+            <Grid item display="flex" alignItems="center" xs={12} sm={6}>
               <PeopleIcon />
               <FormControl sx={{ m: 1, minWidth: 150 }}>
                 <InputLabel id="participants">Participants</InputLabel>
@@ -126,21 +120,6 @@ export default function CreateRoomDialog({ open, setOpen }) {
                   <MenuItem value="3">3</MenuItem>
                   <MenuItem value="4">4</MenuItem>
                   <MenuItem value="5">5</MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-            <Grid item display="flex" alignItems="center">
-              <LockIcon />
-              <FormControl sx={{ m: 1, minWidth: 120 }}>
-                <InputLabel id="room-type">Room type</InputLabel>
-                <Select
-                  labelId="room-type"
-                  label="Room type"
-                  value={roomType}
-                  onChange={(e) => setRoomType(e.target.value)}
-                >
-                  <MenuItem value="open">Open</MenuItem>
-                  <MenuItem value="locked">Locked</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
