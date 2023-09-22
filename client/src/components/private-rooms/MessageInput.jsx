@@ -30,6 +30,7 @@ export const MessageInput = ({ setMessageInputHeight ,currentRoomId}) => {
         label="Type a message"
         fullWidth
         multiline
+        autoFocus
         maxRows={4}
         variant="outlined"
         size="small"
