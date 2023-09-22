@@ -43,10 +43,16 @@ export const useLogOut = () => {
 //room queries
 export const useCreateRooom = () => {
   const { socket } = useContext(SocketContext);
+  const navigate = useNavigate();
   return useMutation(createRoom, {
     onSuccess: (data) => {
-      const { roomId } = data?.data;
+      const { _id: roomId } = data.data.newRoom;
       socket.emit("joinORcreate-new-room", roomId);
+      navigate("/private-rooms", {
+        state: {
+          newJoinedRoom: data.data.newRoom,
+        },
+      });
     },
   });
 };
