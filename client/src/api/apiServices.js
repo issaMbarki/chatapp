@@ -9,6 +9,8 @@ export const logUserOut = () => api.post("/auth/logout");
 export const createRoom = (data) => api.post("/room/create", data);
 export const getRooms = () => api.get("/room/get");
 export const joinRoom = (data) => api.post("/room/join", data);
+export const leaveRoom = (data) => api.post("/room/leave", data);
+
 
 //message routes
 export const getMessages = (roomId) => {

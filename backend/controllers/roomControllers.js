@@ -57,7 +57,38 @@ const joinRoom = async (req, res) => {
     return res.status(500).json({ message: "error joining the room" });
   }
 };
-const deleteRoom = () => {};
+const leaveRoom = async (req,res) => {
+  const userId = req.id
+  const {roomId:roomToLeave}=req.body
+  try {
+    const room = await Room.findById(roomToLeave);
+
+    if (!room) {
+      return res.status(404).json({ message: "Room not found" });
+    }
+
+    const participantIndex = room.participants.indexOf(userId);
+    if (participantIndex === -1) {
+      return res.status(400).json({ message: "User is not a participant in the room" });
+    }
+
+    room.participants.splice(participantIndex, 1);
+
+    // If the user is the last participant, delete the room from the database
+    if (room.participants.length === 0) {
+      await Room.findByIdAndDelete(roomToLeave);
+      return res.status(200).json({ room });
+    }
+
+    await room.save();
+
+   return res.status(200).json({ room });
+   
+  } catch (error) {
+    console.error("Error removing user from room:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
 const updateRoom = () => {};
 const joinRooms = async ({ userId }, socket) => {
   try {
@@ -72,7 +103,7 @@ module.exports = {
   createRoom,
   getRooms,
   joinRoom,
-  deleteRoom,
+  leaveRoom,
   updateRoom,
   joinRooms,
 };

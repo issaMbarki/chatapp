@@ -12,13 +12,15 @@ export default function PrivateRoom() {
   useEffect(() => {
     if (location.state) {
       const { newJoinedRoom } = location.state;
-      setCurrentRoom(newJoinedRoom);
+      setTimeout(() => {
+        setCurrentRoom(newJoinedRoom);
+      }, 600);
     }
   }, [location]);
   return (
     <Grid container spacing={0.5}>
       <Rooms setCurrentRoom={setCurrentRoom} currentRoom={currentRoom} />
-      {currentRoom ? <Chat currentRoom={currentRoom} /> : <NoConv />}
+      {currentRoom ? <Chat currentRoom={currentRoom} setCurrentRoom={setCurrentRoom}/> : <NoConv />}
     </Grid>
   );
 }

@@ -1,6 +1,6 @@
 import "./App.css";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+// import { ReactQueryDevtools } from "react-query/devtools";
 import Authentication from "./pages/Authentication";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import JoinCreate from "./pages/JoinCreate";
@@ -43,7 +43,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         </UserContextProvider>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </ThemeContextProvider>
   );

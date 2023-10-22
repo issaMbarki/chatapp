@@ -11,7 +11,7 @@ import { UserContext } from "../../context/UserContext";
 import { NoMessages } from "./NoMessages";
 import useLoader from "../../hooks/useLoader";
 
-export const Chat = ({ currentRoom }) => {
+export const Chat = ({ currentRoom,setCurrentRoom }) => {
   
   const theme = useTheme();
   const headerHeight = theme.mixins.toolbar.minHeight;
@@ -77,7 +77,7 @@ export const Chat = ({ currentRoom }) => {
           }}
         >
           <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton sx={{ display: { xs: "inline-flex", sm: "none" } }}>
+            <IconButton sx={{ display: { xs: "inline-flex", sm: "none" }}} onClick={()=>setCurrentRoom(null)}>
               <KeyboardBackspaceIcon />
             </IconButton>
             <Box sx={{ display: "flex", flexDirection: "column" }}>

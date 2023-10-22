@@ -54,9 +54,11 @@ io.on("connection", (socket) => {
   socket.on("joinORcreate-new-room", (roomId) => {
     socket.join(roomId);
   });
+  socket.on("leave-room", (roomId) => {
+    socket.leave(roomId);
+  });
   socket.on("disconnecting", () => leaveAllRooms(socket));
 });
 server.listen(4000, () => {
   console.log("server is running");
 });
-// app.listen(4000);

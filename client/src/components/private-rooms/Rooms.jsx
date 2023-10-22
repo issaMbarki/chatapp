@@ -1,10 +1,13 @@
 import { useTheme } from "@emotion/react";
-import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
-import { Box, Grid, IconButton, Typography } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { NoRooms } from "./NoRooms";
 import { useGetRooms } from "../../api/reactQuery";
 import { RoomsLoading } from "../loading/RoomsLoading";
 import useLoader from "../../hooks/useLoader";
+import OptionsMenu from "./OptionsMenu";
+import SnackBar from "./SnackBar";
+import { useState } from "react";
+
 
 export const Rooms = ({ setCurrentRoom, currentRoom }) => {
   const theme = useTheme();
@@ -13,6 +16,16 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
   const { isLoading, data } = useGetRooms();
   const rooms = data?.data;
   const showLoader = useLoader(isLoading, 600);
+
+  const [open, setOpen] = useState(false);
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
+
+
   if (isLoading || showLoader) {
     return <RoomsLoading contentHeight={contentHeight} />;
   }
@@ -21,7 +34,7 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
       item
       xs={12}
       sm={4}
-      sx={{ display: { xs: !currentRoom ? "block" : "none" , sm: "block" }}}
+      sx={{ display: { xs: !currentRoom ? "block" : "none", sm: "block" } }}
     >
       <Box
         sx={{
@@ -50,7 +63,7 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
                   cursor: "pointer",
                 },
               }}
-              onClick={() => setCurrentRoom(room)}
+              onClick={() => {setCurrentRoom(room)}}
             >
               <Typography variant="h6" width={80}>
                 {room.name}
@@ -61,17 +74,21 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
               >
                 {room?.lastMessage}
               </Typography>
-              <IconButton
-                onClick={(e) => {
-                  e.stopPropagation();
-                  console.log("fhfh");
-                }}
-              >
-                <MoreVertOutlinedIcon />
-              </IconButton>
+              <OptionsMenu
+                setCurrentRoom={setCurrentRoom}
+                currentRoom={currentRoom}
+                roomId={room._id}
+                setOpen={setOpen}
+              />
             </Box>
           ))
         )}
+         {open && (
+        <SnackBar
+          open={open}
+          setOpen={handleCloseSnackBar}
+          />
+      )}
       </Box>
     </Grid>
   );

@@ -5,6 +5,7 @@ import {
   getRooms,
   isAuth,
   joinRoom,
+  leaveRoom,
   logUserOut,
   signUserIn,
   signUserUp,
@@ -56,9 +57,11 @@ export const useCreateRooom = () => {
     },
   });
 };
+
 export const useGetRooms = () => {
   return useQuery("rooms", getRooms);
 };
+
 export const useJoinRoom = () => {
   const { socket } = useContext(SocketContext);
   const navigate = useNavigate();
@@ -74,6 +77,19 @@ export const useJoinRoom = () => {
     },
   });
 };
+
+export const useLeaveRoom = () => {
+  const queryClient = useQueryClient();
+  const { socket } = useContext(SocketContext);
+  return useMutation(leaveRoom,{
+    onSuccess:(data)=>{
+      const { _id: roomId } = data.data.room;
+      queryClient.invalidateQueries(["rooms"])
+      socket.emit("leave-room",roomId)
+    }
+  });
+};
+
 
 //message queries
 export const useGetMessages = (roomId) => {
