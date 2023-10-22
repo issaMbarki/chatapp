@@ -39,7 +39,6 @@ export const Chat = ({ currentRoom,setCurrentRoom }) => {
   //add new meesage to UI when the message arrived
   useEffect(() => {
     const addNewMessage = (newMessage) => {
-      console.log(newMessage);
       setMessages((prev) => [...prev, newMessage]);
     };
     socket.on("new-message", addNewMessage);

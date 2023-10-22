@@ -1,5 +1,8 @@
 export const handleMessageChange = (e,setMessage,setMessageInputHeight) => {
-    const messageValue = e.currentTarget.value;
+    let messageValue = e?.currentTarget?.value;
+    if (!messageValue) {
+      messageValue=e
+    }
     setMessage(messageValue);
     const lineBreakCount = (messageValue.match(/\n/g) || []).length;
     if (lineBreakCount === 0) {
