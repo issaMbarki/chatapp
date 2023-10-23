@@ -18,6 +18,7 @@ import { NoMessages } from "./NoMessages";
 import useLoader from "../../hooks/useLoader";
 import { Messages } from "./Messages";
 import SnackBar from "./SnackBar";
+import { useQueryClient } from "react-query";
 
 export const Chat = ({ currentRoom, setCurrentRoom }) => {
   const theme = useTheme();
@@ -34,7 +35,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
   const { socket } = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const { data, isLoading, isError } = useGetMessages(currentRoom._id);
-
+  const queryClient = useQueryClient();
   //initialize the messages from the server responde
   useEffect(() => {
     if (data && data.data) {
@@ -45,6 +46,26 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
   //add new message to UI when the message arrived
   useEffect(() => {
     const addNewMessage = (newMessage) => {
+      //add the new message to the cashe
+      queryClient.setQueryData("rooms",(oldData)=>{
+        let {data}=oldData
+        data.forEach(room => {
+          if (room?._id===currentRoom._id) {
+            room.lastMessage={
+              roomId:newMessage.roomId,
+              content:newMessage.content,
+              sender:newMessage.sender._id,
+              timestamp:newMessage.timestamp,
+              _id:newMessage._id
+            }
+            room.lastMessageSender={
+              firstName:newMessage.sender.firstName,
+              _id:newMessage.sender._id,
+            }
+          }
+        });
+        return oldData
+      })
       setMessages((prev) => [...prev, newMessage]);
     };
     socket.on("new-message", addNewMessage);
