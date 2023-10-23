@@ -24,7 +24,7 @@ import { NavLink } from "react-router-dom";
 const pages = [
   { link: "/join-create", title: "Join / Create" },
   { link: "/private-rooms", title: "Private rooms" },
-  { link: "public-chat", title: "Public chat" },
+  // { link: "public-chat", title: "Public chat" },
 ];
 
 function ResponsiveAppBar() {
