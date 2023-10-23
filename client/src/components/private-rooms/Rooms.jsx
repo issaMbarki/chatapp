@@ -9,8 +9,7 @@ import SnackBar from "./SnackBar";
 import { useContext, useState } from "react";
 import { truncateString } from "../../utils/StringUtils";
 import { UserContext } from "../../context/UserContext";
-import TimeAgo from 'react-timeago';
-
+import TimeAgo from "react-timeago";
 
 export const Rooms = ({ setCurrentRoom, currentRoom }) => {
   const { _id: currentUserID } = useContext(UserContext);
@@ -71,14 +70,25 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
               }}
             >
               <Box>
-                <Typography variant="h6">{truncateString(room.name,25)}</Typography>
-                {room?.lastMessage?.content && (
-                  <Typography
-                    variant="caption"
-                  >
-                    {room.lastMessageSender._id===currentUserID ? "you: ":room.lastMessageSender.firstName+": "}
-                    {truncateString(room.lastMessage.content,20)}{"·"}
-                    <TimeAgo date={room.lastMessage.timestamp} minPeriod={60} formatter={formatTimeAgo}/>
+                <Typography variant="h6">
+                  {truncateString(room.name, 25)}
+                </Typography>
+                {room?.lastMessage?.content ? (
+                  <Typography variant="caption">
+                    {room.lastMessageSender._id === currentUserID
+                      ? "you: "
+                      : room.lastMessageSender.firstName + ": "}
+                    {truncateString(room.lastMessage.content, 20)}
+                    {"·"}
+                    <TimeAgo
+                      date={room.lastMessage.timestamp}
+                      minPeriod={60}
+                      formatter={formatTimeAgo}
+                    />
+                  </Typography>
+                ) : (
+                  <Typography variant="caption">
+                    Be the first to start a conversation in this room!
                   </Typography>
                 )}
               </Box>
@@ -98,13 +108,13 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
 };
 
 function formatTimeAgo(value, unit, suffix) {
-  if (unit === 'second') {
-    return 'Just now';
-  } else if (unit === 'minute') {
+  if (unit === "second") {
+    return "Just now";
+  } else if (unit === "minute") {
     return `${value} min`;
-  } else if (unit === 'hour') {
+  } else if (unit === "hour") {
     return `${value} hr`;
-  } else if (unit === 'day') {
+  } else if (unit === "day") {
     return `${value} day`;
   } else {
     return `${value} ${unit}s`;
