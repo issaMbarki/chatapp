@@ -38,6 +38,7 @@ export const useLogOut = () => {
       setTimeout(() => {
         queryClient.invalidateQueries(["currentUser"]);
         queryClient.removeQueries(["rooms"]);
+        queryClient.removeQueries(["messages"]);
       }, 1000);
     },
   });
