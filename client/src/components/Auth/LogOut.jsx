@@ -1,6 +1,7 @@
 import { useLogOut } from "../../api/reactQuery";
 import { CircularProgress, ListItemIcon, MenuItem } from "@mui/material";
 import { Logout } from "@mui/icons-material";
+import useLoader from "../../hooks/useLoader";
 export default function LogOutMenuItem() {
   const {
     mutate: logUserOut,
@@ -8,6 +9,7 @@ export default function LogOutMenuItem() {
     isError,
     error,
   } = useLogOut();
+  const showLoader = useLoader(isLoading, 1000);
   const handleLogOut = () => {
     logUserOut();
   };
@@ -16,11 +18,11 @@ export default function LogOutMenuItem() {
   }
 
   return (
-    <MenuItem variant="text" disabled={isLoading} onClick={handleLogOut}>
+    <MenuItem variant="text" disabled={isLoading||showLoader} onClick={handleLogOut}>
       <ListItemIcon>
-        {isLoading ? <CircularProgress size={20} /> : <Logout />}
+        {isLoading||showLoader ? <CircularProgress size={20} /> : <Logout />}
       </ListItemIcon>
-      {isLoading ? "loging out..." : "log out"}
+      {isLoading||showLoader ? "loging out..." : "log out"}
     </MenuItem>
   );
 }

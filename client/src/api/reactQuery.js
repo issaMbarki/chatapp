@@ -35,8 +35,10 @@ export const useLogOut = () => {
   const queryClient = useQueryClient();
   return useMutation(logUserOut, {
     onSuccess: () => {
-      queryClient.invalidateQueries(["currentUser"]);
-      queryClient.removeQueries(["rooms"]);
+      setTimeout(() => {
+        queryClient.invalidateQueries(["currentUser"]);
+        queryClient.removeQueries(["rooms"]);
+      }, 1000);
     },
   });
 };
