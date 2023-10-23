@@ -72,7 +72,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
     return () => {
       socket.off("new-message", addNewMessage);
     };
-  }, [socket, messages]);
+  }, [socket, messages,queryClient,currentRoom]);
 
   const showLoader = useLoader(isLoading, 600);
   // Scroll to the end of the chat box when the component is rendered or when the box resized
