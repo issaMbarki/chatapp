@@ -26,6 +26,8 @@ const getRooms = async (req, res) => {
   try {
     const rooms = await Room.find({ participants: currentUser })
       .populate("participants")
+      .populate("lastMessageSender", "firstName") // Populate the lastMessageSender field with the firstName
+      .populate("lastMessage") // Populate the lastMessage field
       .exec();
     return res.status(200).json(rooms);
   } catch (error) {

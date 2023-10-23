@@ -1,4 +1,10 @@
-import { Box, CircularProgress, Grid, IconButton, Typography } from "@mui/material";
+import {
+  Box,
+  CircularProgress,
+  Grid,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import InfoOutlined from "@mui/icons-material/InfoOutlined";
 import { useTheme } from "@emotion/react";
@@ -10,9 +16,9 @@ import { useGetMessages } from "../../api/reactQuery";
 import { UserContext } from "../../context/UserContext";
 import { NoMessages } from "./NoMessages";
 import useLoader from "../../hooks/useLoader";
+import { Messages } from "./Messages";
 
-export const Chat = ({ currentRoom,setCurrentRoom }) => {
-  
+export const Chat = ({ currentRoom, setCurrentRoom }) => {
   const theme = useTheme();
   const headerHeight = theme.mixins.toolbar.minHeight;
   const contentHeight = `calc(98vh - ${headerHeight}px)`;
@@ -24,7 +30,6 @@ export const Chat = ({ currentRoom,setCurrentRoom }) => {
   }px)`;
   const chatBoxRef = useRef(null);
 
-  const {_id:currentUser}=useContext(UserContext)
   const { socket } = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
   const { data, isLoading, isError } = useGetMessages(currentRoom._id);
@@ -36,7 +41,7 @@ export const Chat = ({ currentRoom,setCurrentRoom }) => {
     }
   }, [data]);
 
-  //add new meesage to UI when the message arrived
+  //add new message to UI when the message arrived
   useEffect(() => {
     const addNewMessage = (newMessage) => {
       setMessages((prev) => [...prev, newMessage]);
@@ -50,16 +55,21 @@ export const Chat = ({ currentRoom,setCurrentRoom }) => {
   const showLoader = useLoader(isLoading, 600);
   // Scroll to the end of the chat box when the component is rendered or when the box resized
   useEffect(() => {
-    if (!isLoading&&!showLoader) {
+    if (!isLoading && !showLoader) {
       chatBoxRef.current.scrollTop = chatBoxRef?.current?.scrollHeight;
     }
-  }, [messageInputHeight, isLoading,showLoader]);
+  }, [messageInputHeight, isLoading, showLoader]);
 
   if (isError) {
     return "error";
   }
   return (
-    <Grid item sm={8} xs={12}  sx={{ display: { xs: currentRoom ? "block" : "none",sm:"block" } }}>
+    <Grid
+      item
+      sm={8}
+      xs={12}
+      sx={{ display: { xs: currentRoom ? "block" : "none", sm: "block" } }}
+    >
       <Box
         sx={{
           height: contentHeight,
@@ -76,7 +86,10 @@ export const Chat = ({ currentRoom,setCurrentRoom }) => {
           }}
         >
           <Box sx={{ display: "flex", gap: 1 }}>
-            <IconButton sx={{ display: { xs: "inline-flex", sm: "none" }}} onClick={()=>setCurrentRoom(null)}>
+            <IconButton
+              sx={{ display: { xs: "inline-flex", sm: "none" } }}
+              onClick={() => setCurrentRoom(null)}
+            >
               <KeyboardBackspaceIcon />
             </IconButton>
             <Box sx={{ display: "flex", flexDirection: "column" }}>
@@ -97,38 +110,24 @@ export const Chat = ({ currentRoom,setCurrentRoom }) => {
               overflow: "auto",
               display: "flex",
               flexDirection: "column-reverse",
-              alignItems:isLoading||showLoader?"center ":"",
-              justifyContent:isLoading||showLoader?"center":""
+              alignItems: isLoading || showLoader ? "center " : "",
+              justifyContent: isLoading || showLoader ? "center" : "",
             }}
           >
             <Box>
-              {isLoading||showLoader?<CircularProgress />: messages.length
-                ? messages.map((message) => (
-                    <Box
-                      key={message._id}
-                      p={0.8}
-                      display="flex"
-                      justifyContent={
-                        message.sender !== currentUser ? "flex-start" : "flex-end"
-                      }
-                    >
-                      <Box
-                        sx={{
-                          backgroundColor:  message.sender === currentUser ? theme.palette.primary.light:theme.palette.listBackGround.main,
-                          py: 0.8,
-                          pr: 2,
-                          pl: 0.8,
-                          borderRadius: "10px",
-                        }}
-                      >
-                        {message.content}
-                      </Box>
-                    </Box>
-                  ))
-                : <NoMessages/>}
+              {isLoading || showLoader ? (
+                <CircularProgress />
+              ) : messages.length ? (
+                <Messages messages={messages}/>
+              ) : (
+                <NoMessages />
+              )}
             </Box>
           </Box>
-          <MessageInput currentRoomId={currentRoom._id} setMessageInputHeight={setMessageInputHeight} />
+          <MessageInput
+            currentRoomId={currentRoom._id}
+            setMessageInputHeight={setMessageInputHeight}
+          />
         </Box>
       </Box>
     </Grid>

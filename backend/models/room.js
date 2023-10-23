@@ -13,12 +13,9 @@ const roomSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  lastMessageTimestamp: {
-    type: Date,
-  },
   lastMessage: {
-    type: String,
-    default: "you: hello, how are you!",
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Message",
   },
   lastMessageSender: {
     type: mongoose.Schema.Types.ObjectId,

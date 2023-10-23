@@ -6,10 +6,14 @@ import { RoomsLoading } from "../loading/RoomsLoading";
 import useLoader from "../../hooks/useLoader";
 import OptionsMenu from "./OptionsMenu";
 import SnackBar from "./SnackBar";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { truncateString } from "../../utils/StringUtils";
+import { UserContext } from "../../context/UserContext";
+import TimeAgo from 'react-timeago';
 
 
 export const Rooms = ({ setCurrentRoom, currentRoom }) => {
+  const { _id: currentUserID } = useContext(UserContext);
   const theme = useTheme();
   const appBarHeight = theme.mixins.toolbar.minHeight;
   const contentHeight = `calc(98vh - ${appBarHeight}px)`;
@@ -24,7 +28,6 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
     }
     setOpen(false);
   };
-
 
   if (isLoading || showLoader) {
     return <RoomsLoading contentHeight={contentHeight} />;
@@ -53,27 +56,32 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
               key={room._id}
               sx={{
                 display: "flex",
-                height: 80,
+                // height: 80,
                 alignItems: "center",
                 justifyContent: "space-between",
-                padding: 2,
+                padding: "0.8rem",
                 borderBottom: "1px solid #ccc",
                 "&:hover": {
                   backgroundColor: "#fcfcfc",
                   cursor: "pointer",
                 },
               }}
-              onClick={() => {setCurrentRoom(room)}}
+              onClick={() => {
+                setCurrentRoom(room);
+              }}
             >
-              <Typography variant="h6" width={80}>
-                {room.name}
-              </Typography>
-              <Typography
-                variant="subtitle2"
-                sx={{ flexGrow: 1, ml: "1rem", alignSelf: "end" }}
-              >
-                {room?.lastMessage}
-              </Typography>
+              <Box>
+                <Typography variant="h6">{truncateString(room.name,25)}</Typography>
+                {room?.lastMessage?.content && (
+                  <Typography
+                    variant="caption"
+                  >
+                    {room.lastMessageSender._id===currentUserID ? "you: ":room.lastMessageSender.firstName+": "}
+                    {truncateString(room.lastMessage.content,20)}{"·"}
+                    <TimeAgo date={room.lastMessage.timestamp} minPeriod={60} formatter={formatTimeAgo}/>
+                  </Typography>
+                )}
+              </Box>
               <OptionsMenu
                 setCurrentRoom={setCurrentRoom}
                 currentRoom={currentRoom}
@@ -83,13 +91,22 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
             </Box>
           ))
         )}
-         {open && (
-        <SnackBar
-          open={open}
-          setOpen={handleCloseSnackBar}
-          />
-      )}
+        {open && <SnackBar open={open} setOpen={handleCloseSnackBar} />}
       </Box>
     </Grid>
   );
 };
+
+function formatTimeAgo(value, unit, suffix) {
+  if (unit === 'second') {
+    return 'Just now';
+  } else if (unit === 'minute') {
+    return `${value} min`;
+  } else if (unit === 'hour') {
+    return `${value} hr`;
+  } else if (unit === 'day') {
+    return `${value} day`;
+  } else {
+    return `${value} ${unit}s`;
+  }
+}
