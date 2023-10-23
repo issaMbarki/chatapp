@@ -51,7 +51,7 @@ export const Messages = ({ messages }) => {
           sx={{
             backgroundColor:
               message.sender._id === currentUser
-                ? theme.palette.primary.light
+                ? theme.palette.message.main
                 : theme.palette.listBackGround.main,
             py: 0.8,
             pr: 2,

@@ -61,7 +61,7 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
                 padding: "0.8rem",
                 borderBottom: "1px solid #ccc",
                 "&:hover": {
-                  backgroundColor: "#fcfcfc",
+                  backgroundColor: theme.palette.listBackGround.hover,
                   cursor: "pointer",
                 },
               }}
