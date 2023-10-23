@@ -24,9 +24,9 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link component={NavLink} color="inherit" to="#">
-        Your Website
+        Website
       </Link>{" "}
-      F{new Date().getFullYear()}
+      {new Date().getFullYear()}
       {"."}
     </Typography>
   );
@@ -103,10 +103,10 @@ export default function SignInSide() {
           helperText={formErrors.password}
           onChange={handlChange}
         />
-        <FormControlLabel
+        {/* <FormControlLabel
           control={<Checkbox value="remember" color="primary" />}
           label="Remember me"
-        />
+        /> */}
         <ButtonLoad
           isLoading={isLoading}
           text="Sign in"

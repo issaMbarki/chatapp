@@ -15,7 +15,7 @@ function Copyright(props) {
     >
       {"Copyright © "}
       <Link component={NavLink} color="inherit" to="#">
-        Your Website
+        Website
       </Link>{" "}
       {new Date().getFullYear()}
       {"."}
