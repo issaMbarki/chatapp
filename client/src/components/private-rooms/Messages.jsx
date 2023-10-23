@@ -23,6 +23,7 @@ export const Messages = ({ messages }) => {
           src="x"
           sx={{
             marginRight: "4px",
+            alignSelf: "center",
           }}
         />
       ) : (
@@ -45,6 +46,7 @@ export const Messages = ({ messages }) => {
             message.sender._id === messages[index + 1].sender._id &&
             "44px",
           mr: message.sender._id === currentUser && 0.8,
+         
         }}
       >
         <Typography
@@ -65,6 +67,7 @@ export const Messages = ({ messages }) => {
               index > 0 && message.sender._id === messages[index].sender.id
                 ? "5px"
                 : "10px",
+                maxWidth:"80%"
           }}
         >
           {message.content}
