@@ -39,6 +39,7 @@ function ResponsiveAppBar() {
   };
 
   const handleCloseNavMenu = () => {
+    console.log("close azby");
     setAnchorElNav(null);
   };
 
@@ -105,7 +106,7 @@ function ResponsiveAppBar() {
               {pages.map((page) => {
                 return (
                   <NavLink to={page.link} key={page.title}>
-                    <MenuItem disabled onClick={handleCloseNavMenu}>
+                    <MenuItem  onClick={handleCloseNavMenu} sx={{color:"white"}}>
                       <Typography textAlign="center">{page.title}</Typography>
                     </MenuItem>
                   </NavLink>
@@ -141,7 +142,6 @@ function ResponsiveAppBar() {
             {pages.map((page) => (
               <NavLink to={page.link} key={page.title}>
                 <Button
-                  onClick={handleCloseNavMenu}
                   sx={{ my: 2, color: "white", display: "block" }}
                 >
                   {page.title}
