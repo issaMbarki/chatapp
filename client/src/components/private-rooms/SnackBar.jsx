@@ -6,7 +6,7 @@ import { Slide } from "@mui/material";
 function TransitionLeft(props) {
   return <Slide {...props} direction="right" />;
 }
-export default function SnackBar({ open, setOpen}) {
+export default function SnackBar({ open, setOpen, message}) {
 
   const handleClose = (event) => {
     event?.stopPropagation();
@@ -33,7 +33,7 @@ export default function SnackBar({ open, setOpen}) {
         autoHideDuration={6000}
         onClose={handleClose}
         TransitionComponent={TransitionLeft}
-        message="Room left !"
+        message={message}
         action={action}
         onClick={(e)=>e.stopPropagation()}
       />

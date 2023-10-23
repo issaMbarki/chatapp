@@ -6,17 +6,18 @@ import {
   Typography,
 } from "@mui/material";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
-import InfoOutlined from "@mui/icons-material/InfoOutlined";
+// import InfoOutlined from "@mui/icons-material/InfoOutlined";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import { useTheme } from "@emotion/react";
 import { Participants } from "./Participants";
 import { MessageInput } from "./MessageInput";
 import { useEffect, useRef, useState, useContext } from "react";
 import { SocketContext } from "../../context/SocketContext";
 import { useGetMessages } from "../../api/reactQuery";
-import { UserContext } from "../../context/UserContext";
 import { NoMessages } from "./NoMessages";
 import useLoader from "../../hooks/useLoader";
 import { Messages } from "./Messages";
+import SnackBar from "./SnackBar";
 
 export const Chat = ({ currentRoom, setCurrentRoom }) => {
   const theme = useTheme();
@@ -59,6 +60,21 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
       chatBoxRef.current.scrollTop = chatBoxRef?.current?.scrollHeight;
     }
   }, [messageInputHeight, isLoading, showLoader]);
+  const handleCProomCode=()=>{
+    try {
+      navigator.clipboard.writeText(currentRoom.code);
+      setOpen(true);
+    } catch (error) {
+      console.log("error occurred while trying to copy code", error);
+    }
+  }
+  const [open, setOpen] = useState(false);
+  const handleCloseSnackBar = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    setOpen(false);
+  };
 
   if (isError) {
     return "error";
@@ -97,8 +113,8 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
               <Participants participants={currentRoom.participants} />
             </Box>
           </Box>
-          <IconButton sx={{ display: { xs: "inline-flex" } }}>
-            <InfoOutlined />
+          <IconButton sx={{ display: { xs: "inline-flex" }, alignSelf:"center" }} onClick={handleCProomCode}>
+            <PersonAddIcon />
           </IconButton>
         </Box>
         <Box>
@@ -128,8 +144,9 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
             currentRoomId={currentRoom._id}
             setMessageInputHeight={setMessageInputHeight}
           />
-        </Box>
+        </Box> 
       </Box>
+      {open && <SnackBar message="room code copied ✔️" open={open} setOpen={handleCloseSnackBar} />}
     </Grid>
   );
 };

@@ -101,7 +101,7 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
             </Box>
           ))
         )}
-        {open && <SnackBar open={open} setOpen={handleCloseSnackBar} />}
+        {open && <SnackBar message="Room left !" open={open} setOpen={handleCloseSnackBar} />}
       </Box>
     </Grid>
   );
