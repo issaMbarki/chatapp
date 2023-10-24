@@ -15,7 +15,7 @@ export function UserContextProvider({ children }) {
     );
   }
   //check if the server is not working
-  if (isError && !error?.response?.data) {
+  if (isError && !error?.response?.data?.message) {
     return <ServerError />;
   }
   return (
