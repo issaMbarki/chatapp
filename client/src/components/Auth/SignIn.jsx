@@ -10,6 +10,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IsInvalidInput, checkEmptyFields } from "../../utils/checkInputs";
 import { ButtonLoad } from "../loading/ButtonLoad";
+import ErrorSnackbar from "../error-handling/ErrorSnackbar";
 // TODO remove, this demo shouldn't need to rFeset the theme.
 
 function Copyright(props) {
@@ -128,6 +129,7 @@ export default function SignInSide() {
         </Grid>
         <Copyright sx={{ mt: 5 }} />
       </Box>
+      {isError&&<ErrorSnackbar error={error} isError={isError}/>}
     </>
   );
 }

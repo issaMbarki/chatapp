@@ -21,6 +21,7 @@ import { ClickAwayListener, Tooltip } from "@mui/material";
 import { useCreateRooom } from "../../api/reactQuery";
 import { checkRoomName } from "../../utils/checkInputs";
 import { ButtonLoad } from "../loading/ButtonLoad";
+import ErrorSnackbar from "../error-handling/ErrorSnackbar";
 
 const Transition = forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -32,7 +33,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
   const [Titleopen, setTitleOpen] = useState(false);
   const [roomError, setRoomError] = useState("");
 
-  const { mutate: createRoom, isLoading, isError } = useCreateRooom();
+  const { mutate: createRoom, isLoading, isError,error } = useCreateRooom();
   const handleCreateRoom = (e) => {
     e.preventDefault();
     const error = checkRoomName(roomName);
@@ -137,6 +138,7 @@ export default function CreateRoomDialog({ open, setOpen }) {
           onClick={handleCreateRoom}
         />
       </DialogActions>
+      {isError&&<ErrorSnackbar error={error} isError={isError}/>}
     </Dialog>
   );
 }

@@ -8,7 +8,7 @@ export const UserContext = createContext({});
 
 export function UserContextProvider({ children }) {
   const { isLoading, data, isError, error } = useIsAuth();
-  const showLoader= useLoader(isLoading,3000)
+  const showLoader= useLoader(isLoading,1000)
   if (showLoader||isLoading) {
     return (
       <LinearLoading/>

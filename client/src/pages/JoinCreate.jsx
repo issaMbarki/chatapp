@@ -16,6 +16,7 @@ import { checkRoomIdInput } from "../utils/checkInputs";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 import { ButtonLoad } from "../components/loading/ButtonLoad";
 import { useTheme } from "@emotion/react";
+import ErrorSnackbar from "../components/error-handling/ErrorSnackbar";
 
 export default function PrivateRoom() {
   const theme = useTheme();
@@ -117,6 +118,7 @@ export default function PrivateRoom() {
         </Grid>
       </Grid>
       {open && <CreateRoomDialog open={open} setOpen={setOpen} />}
+      {isError&&<ErrorSnackbar error={error} isError={isError}/>}
     </>
   );
 }

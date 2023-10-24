@@ -7,6 +7,7 @@ import MoreVertOutlinedIcon from "@mui/icons-material/MoreVertOutlined";
 import { useEffect, useState } from "react";
 import { useLeaveRoom } from "../../api/reactQuery";
 import useLoader from "../../hooks/useLoader";
+import ErrorSnackbar from "../error-handling/ErrorSnackbar";
 
 const StyledMenu = styled((props) => (
   <Menu
@@ -54,21 +55,27 @@ export default function OptionsMenu({
   currentRoom,
   setCurrentRoom,
   roomId,
-  setOpen
+  setOpen,
 }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open2 = Boolean(anchorEl);
-  const { mutate: leaveRoom, isLoading, isSuccess } = useLeaveRoom();
+  const {
+    mutate: leaveRoom,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+  } = useLeaveRoom();
   const showLoader = useLoader(isLoading, 600);
-  useEffect(()=>{
+  useEffect(() => {
     if (isSuccess) {
       if (roomId === currentRoom?._id) {
         setCurrentRoom(null);
       }
-      setOpen(true)
+      setOpen(true);
     }
-  },[isSuccess,roomId,currentRoom,setOpen,setCurrentRoom])
-  
+  }, [isSuccess, roomId, currentRoom, setOpen, setCurrentRoom]);
+
   const handleClick = (event) => {
     console.log("menu clicked");
     event.stopPropagation();
@@ -80,7 +87,7 @@ export default function OptionsMenu({
   };
   const handleLeaveRoom = (e) => {
     e.stopPropagation();
-    leaveRoom({roomId})
+    leaveRoom({ roomId });
   };
 
   return (
@@ -102,10 +109,15 @@ export default function OptionsMenu({
         onClose={handleClose}
       >
         <MenuItem onClick={handleLeaveRoom} disableRipple>
-          {isLoading || showLoader ?<CircularProgress size={20}/>:<LogoutIcon />} 
+          {isLoading || showLoader ? (
+            <CircularProgress size={20} />
+          ) : (
+            <LogoutIcon />
+          )}
           Leave
         </MenuItem>
       </StyledMenu>
+      {isError&&<ErrorSnackbar error={error} isError={isError}/>}
     </>
   );
 }

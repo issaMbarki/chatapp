@@ -10,13 +10,14 @@ import { useContext, useState } from "react";
 import { truncateString } from "../../utils/StringUtils";
 import { UserContext } from "../../context/UserContext";
 import TimeAgo from "react-timeago";
+import ErrorSnackbar from "../error-handling/ErrorSnackbar";
 
 export const Rooms = ({ setCurrentRoom, currentRoom }) => {
   const { _id: currentUserID } = useContext(UserContext);
   const theme = useTheme();
   const appBarHeight = theme.mixins.toolbar.minHeight;
   const contentHeight = `calc(98vh - ${appBarHeight}px)`;
-  const { isLoading, data } = useGetRooms();
+  const { isLoading, data,isError,error } = useGetRooms();
   const rooms = data?.data;
   const showLoader = useLoader(isLoading, 600);
 
@@ -103,6 +104,7 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
         )}
         {open && <SnackBar message="Room left !" open={open} setOpen={handleCloseSnackBar} />}
       </Box>
+      {isError&&<ErrorSnackbar error={error} isError={isError}/>}
     </Grid>
   );
 };

@@ -4,6 +4,7 @@ import { NavLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { IsInvalidInput, checkEmptyFields } from "../../utils/checkInputs";
 import { ButtonLoad } from "../loading/ButtonLoad";
+import ErrorSnackbar from "../error-handling/ErrorSnackbar";
 
 function Copyright(props) {
   return (
@@ -159,6 +160,7 @@ export default function SignInSide() {
         </Grid>
         <Copyright sx={{ mt: 5 }} />
       </Box>
+      {isError&&<ErrorSnackbar error={error} isError={isError}/>}
     </>
   );
 }

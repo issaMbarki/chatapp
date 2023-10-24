@@ -19,6 +19,7 @@ import useLoader from "../../hooks/useLoader";
 import { Messages } from "./Messages";
 import SnackBar from "./SnackBar";
 import { useQueryClient } from "react-query";
+import ErrorSnackbar from "../error-handling/ErrorSnackbar";
 
 export const Chat = ({ currentRoom, setCurrentRoom }) => {
   const theme = useTheme();
@@ -34,7 +35,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
 
   const { socket } = useContext(SocketContext);
   const [messages, setMessages] = useState([]);
-  const { data, isLoading, isError } = useGetMessages(currentRoom._id);
+  const { data, isLoading, isError, error } = useGetMessages(currentRoom._id);
   const queryClient = useQueryClient();
   //initialize the messages from the server responde
   useEffect(() => {
@@ -168,6 +169,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
         </Box> 
       </Box>
       {open && <SnackBar message="room code copied ✔️" open={open} setOpen={handleCloseSnackBar} />}
+      {isError&&<ErrorSnackbar error={error} isError={isError}/>}
     </Grid>
   );
 };
