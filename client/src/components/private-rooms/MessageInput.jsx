@@ -14,7 +14,7 @@ export const MessageInput = ({ setMessageInputHeight, currentRoomId }) => {
   const [message, setMessage] = useState("");
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (message) {
+    if (message.trim()) {
       socket.emit("send-message", {
         content: message,
         roomId: currentRoomId,
@@ -69,7 +69,9 @@ export const MessageInput = ({ setMessageInputHeight, currentRoomId }) => {
         )}
         <EmojiEmotionsIcon />
       </IconButton>
-      <IconButton type="submit">
+      <IconButton type="submit" sx={{
+        color:message.trim()?"#42a5f5":""
+      }}>
         <SendIcon />
       </IconButton>
     </Box>

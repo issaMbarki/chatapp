@@ -10,7 +10,8 @@ export const Messages = ({ messages }) => {
     <Box
       key={message._id}
       sx={{
-        display: message.sender._id !== currentUser ? "flex" : "",
+        display: "flex",
+        flexDirection: message.sender._id !== currentUser ? "row" : "column"
       }}
     >
       {(index < messages.length - 1 &&
@@ -35,6 +36,10 @@ export const Messages = ({ messages }) => {
         alignItems={
           message.sender._id !== currentUser ? "flex-start" : "flex-end"
         }
+        alignSelf={
+          message.sender._id !== currentUser ? "flex-start" : "flex-end"
+        }
+      
         sx={{
           py:
             index === messages.length - 1 || index < messages.length - 1
@@ -46,11 +51,13 @@ export const Messages = ({ messages }) => {
             message.sender._id === messages[index + 1].sender._id &&
             "44px",
           mr: message.sender._id === currentUser && 0.8,
+          maxWidth:"80%",
          
         }}
       >
         <Typography
           sx={{
+            whiteSpace:"pre-wrap",
             backgroundColor:
               message.sender._id === currentUser
                 ? theme.palette.message.main
@@ -67,10 +74,10 @@ export const Messages = ({ messages }) => {
               index > 0 && message.sender._id === messages[index].sender.id
                 ? "5px"
                 : "10px",
-                maxWidth:"80%",
                 mt:index===0?2:""
           }}
         >
+          {console.log(message.content)}
           {message.content}
         </Typography>
         {index === messages.length - 1 ||
