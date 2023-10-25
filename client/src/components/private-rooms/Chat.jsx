@@ -51,7 +51,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
       queryClient.setQueryData("rooms",(oldData)=>{
         let {data}=oldData
         data.forEach(room => {
-          if (room?._id===currentRoom._id) {
+          if (room?._id===newMessage.roomId) {
             room.lastMessage={
               roomId:newMessage.roomId,
               content:newMessage.content,
@@ -67,7 +67,9 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
         });
         return { ...oldData, data }; // Return the updated data
       })
-      setMessages((prev) => [...prev, newMessage]);
+      if (currentRoom._id===newMessage.roomId) {
+        setMessages((prev) => [...prev, newMessage]);
+      }
     };
     socket.on("new-message", addNewMessage);
     return () => {
