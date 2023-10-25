@@ -25,7 +25,10 @@ const getRooms = async (req, res) => {
   const currentUser = req.id;
   try {
     const rooms = await Room.find({ participants: currentUser })
-      .populate("participants")
+    .populate({
+      path: "participants",
+      select: "-password" // Exclude the password field from the populated participants
+    })
       .populate("lastMessageSender", "firstName") // Populate the lastMessageSender field with the firstName
       .populate("lastMessage") // Populate the lastMessage field
       .exec();
