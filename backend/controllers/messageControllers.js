@@ -16,7 +16,6 @@ const getMessages = async (req, res) => {
 };
 const sendMessage = async ({ sender, content, roomId }, io) => {
   try {
-    console.log(sender);
     // Create a new message instance
     const newMessage = new Message({
       roomId,
