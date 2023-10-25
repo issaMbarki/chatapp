@@ -20,14 +20,15 @@ import { ManageAccounts } from "@mui/icons-material";
 import { useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import { NavLink } from "react-router-dom";
+import { useTheme } from "@emotion/react";
 
 const pages = [
   { link: "/join-create", title: "Join / Create" },
   { link: "/private-rooms", title: "Private rooms" },
   // { link: "public-chat", title: "Public chat" },
 ];
-
 function ResponsiveAppBar() {
+  const theme=useTheme()
   const [anchorElNav, setAnchorElNav] = useState(null);
   const [anchorElUser, setAnchorElUser] = useState(null);
 
@@ -106,7 +107,7 @@ function ResponsiveAppBar() {
               {pages.map((page) => {
                 return (
                   <NavLink to={page.link} key={page.title}>
-                    <MenuItem  onClick={handleCloseNavMenu} sx={{color:"white"}}>
+                    <MenuItem  onClick={handleCloseNavMenu} sx={{color:theme.palette.mode==='dark'?"white":"black"}}>
                       <Typography textAlign="center">{page.title}</Typography>
                     </MenuItem>
                   </NavLink>
