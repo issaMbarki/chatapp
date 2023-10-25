@@ -33,7 +33,19 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
     return <RoomsLoading contentHeight={contentHeight} />;
   }
   rooms.sort((a,b)=>{
-    return new Date(b.lastMessage.timestamp)-new Date(a.lastMessage.timestamp)
+    let timeA
+    let timeB
+    if (a?.lastMessage?.timestamp) {
+     timeA= new Date(a.lastMessage.timestamp)
+    }else{
+      timeA= new Date(a.timestamp)
+    }
+    if (b?.lastMessage?.timestamp) {
+      timeB= new Date(b.lastMessage.timestamp)
+     }else{
+       timeB= new Date(b.timestamp)
+     }
+    return timeB-timeA
 })
   return (
     <Grid
@@ -93,6 +105,12 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
                 ) : (
                   <Typography variant="caption">
                     Be the first to start a conversation in this room!
+                    {"·"}
+                    <TimeAgo
+                      date={room.timestamp}
+                      minPeriod={60}
+                      formatter={formatTimeAgo}
+                    />
                   </Typography>
                 )}
               </Box>

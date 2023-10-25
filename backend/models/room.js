@@ -32,6 +32,10 @@ const roomSchema = new mongoose.Schema({
       ref: "User",
     },
   ],
+  timestamp: {
+    type: Date,
+    default: Date.now,
+  },
 });
 const Room = mongoose.model("Room", roomSchema);
 module.exports = Room;
