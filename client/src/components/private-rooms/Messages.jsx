@@ -67,7 +67,8 @@ export const Messages = ({ messages }) => {
               index > 0 && message.sender._id === messages[index].sender.id
                 ? "5px"
                 : "10px",
-                maxWidth:"80%"
+                maxWidth:"80%",
+                mt:index===0?2:""
           }}
         >
           {message.content}
