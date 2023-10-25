@@ -83,7 +83,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
     if (!isLoading && !showLoader) {
       chatBoxRef.current.scrollTop = chatBoxRef?.current?.scrollHeight;
     }
-  }, [messageInputHeight, isLoading, showLoader]);
+  }, [messageInputHeight, isLoading, showLoader,currentRoom]);
   const handleCProomCode=()=>{
     try {
       navigator.clipboard.writeText(currentRoom.code);
