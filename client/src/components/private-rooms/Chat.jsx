@@ -65,7 +65,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
             }
           }
         });
-        return oldData
+        return { ...oldData, data }; // Return the updated data
       })
       setMessages((prev) => [...prev, newMessage]);
     };
