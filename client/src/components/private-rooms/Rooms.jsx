@@ -32,6 +32,9 @@ export const Rooms = ({ setCurrentRoom, currentRoom }) => {
   if (isLoading || showLoader) {
     return <RoomsLoading contentHeight={contentHeight} />;
   }
+  rooms.sort((a,b)=>{
+    return new Date(b.lastMessage.timestamp)-new Date(a.lastMessage.timestamp)
+})
   return (
     <Grid
       item
