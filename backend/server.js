@@ -20,8 +20,6 @@ app.use(
   cors({
     origin: [
       process.env.FRONT_SERVER_URI,
-      process.env.FRONT_SERVER_ISSAM_URI,
-      process.env.FRONT_SERVER_ZAKI_URI,
     ],
     credentials: true,
   })
@@ -38,8 +36,6 @@ const io = new Server(server, {
   cors: {
     origin: [
       process.env.FRONT_SERVER_URI,
-      process.env.FRONT_SERVER_ISSAM_URI,
-      process.env.FRONT_SERVER_ZAKI_URI,
     ],
   },
 });
