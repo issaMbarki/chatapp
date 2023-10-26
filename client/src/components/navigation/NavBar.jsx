@@ -49,7 +49,7 @@ function ResponsiveAppBar() {
   };
   const { username, firstName } = useContext(UserContext);
   return (
-    <AppBar position="fixed">
+    <AppBar position="sticky">
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <SvgIcon

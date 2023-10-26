@@ -33,16 +33,15 @@ export const MessageInput = ({ setMessageInputHeight, currentRoomId }) => {
     <Box
       component="form"
       onSubmit={handleSendMessage}
-      p={1}
       display="flex"
       alignItems="center"
       position="relative"
+      paddingLeft={1}
     >
       <TextField
         label="Type a message"
         fullWidth
         multiline
-        autoFocus
         focused={showEmojiPicker}
         maxRows={4}
         variant="outlined"
@@ -51,7 +50,7 @@ export const MessageInput = ({ setMessageInputHeight, currentRoomId }) => {
         onChange={(e) =>
           handleMessageChange(e, setMessage, setMessageInputHeight)
         }
-        onKeyDown={(e) => handleKeyPress(e, handleSendMessage)} // I want when the user press enter, sen dthe message not add break line
+        onKeyDown={(e) => handleKeyPress(e, handleSendMessage)} // I want when the user press enter, send the message and not adding a break line
       />
 
       <IconButton onClick={(e) => { e.stopPropagation(); setShowEmojiPicker(true)}}>

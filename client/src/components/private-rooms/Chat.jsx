@@ -24,11 +24,11 @@ import ErrorSnackbar from "../error-handling/ErrorSnackbar";
 export const Chat = ({ currentRoom, setCurrentRoom }) => {
   const theme = useTheme();
   const headerHeight = theme.mixins.toolbar.minHeight;
-  const contentHeight = `calc(98vh - ${headerHeight}px)`;
+  const contentHeight = `calc(98dvh - ${headerHeight}px)`;
   //here i created a state for the message input because its a textArea with multiple tows, so every time the use add a  row (breakLine) I update the chat box height based on it
   const [messageInputHeight, setMessageInputHeight] = useState(50);
   //80 is the height of the chat header
-  const chatBoxHeight = `calc(98vh - ${
+  const chatBoxHeight = `calc(98dvh - ${
     80 + headerHeight + messageInputHeight
   }px)`;
   const chatBoxRef = useRef(null);
@@ -37,7 +37,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
   const [messages, setMessages] = useState([]);
   const { data, isLoading, isError, error } = useGetMessages(currentRoom._id);
   const queryClient = useQueryClient();
-  //initialize the messages from the server responde
+  //initialize the messages from the server response
   useEffect(() => {
     if (data && data.data) {
       setMessages(data.data);
@@ -84,14 +84,23 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
       chatBoxRef.current.scrollTop = chatBoxRef?.current?.scrollHeight;
     }
   }, [messageInputHeight, isLoading, showLoader,currentRoom]);
-  const handleCProomCode=()=>{
+  
+  const handleCProomCode = async () => {
     try {
-      navigator.clipboard.writeText(currentRoom.code);
-      setOpen(true);
+      const permissionStatus = await navigator.permissions.query({ name: 'clipboard-write' });
+  
+      if (permissionStatus.state === 'granted' || permissionStatus.state === 'prompt') {
+        navigator.clipboard.writeText(currentRoom.code);
+        setOpen(true);
+      } else {
+        // Permission denied
+        alert(`room code: ${currentRoom.code}`)
+        console.log('Permission to write to clipboard denied.');
+      }
     } catch (error) {
-      console.log("error occurred while trying to copy code", error);
+      console.log('Error occurred while trying to copy code', error);
     }
-  }
+  };
   const [open, setOpen] = useState(false);
   const handleCloseSnackBar = (event, reason) => {
     if (reason === "clickaway") {
