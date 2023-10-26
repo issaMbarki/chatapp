@@ -61,10 +61,12 @@ export default function PrivateRoom() {
           backgroundRepeat: "no-repeat",
           backgroundSize: "contain",
           backgroundPosition: "left",
-          minHeight: "90vh",
+          minHeight: "88vh",
         }}
       >
-        <Grid item>
+        <Grid item sx={{
+          px:1
+          }}>
           <Paper elevation={3} sx={{ padding: "2rem", maxWidth: "400px" }}>
             <Typography variant="h6" gutterBottom component="span">
               Private Room
@@ -99,7 +101,7 @@ export default function PrivateRoom() {
               )}
               <ButtonLoad
                 isLoading={isLoading}
-                text="Join Room"
+                text="Join"
                 loadingText="Joining"
                 type="submit"
                 variant="contained"

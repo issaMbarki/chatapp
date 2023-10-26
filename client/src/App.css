@@ -1,39 +1,44 @@
-*{
-    margin: 0;
-    padding: 0;
+* {
+  margin: 0;
+  padding: 0;
 }
-a{
-    text-decoration: none ;
+a {
+  text-decoration: none;
 }
 
-a.active button{
-    font-weight: bold;
-    opacity: 0.5;
+a.active button {
+  font-weight: bold;
+  opacity: 0.5;
 }
+
 @media only screen and (min-width: 601px) {
-    .chat-box::-webkit-scrollbar-thumb,
-    .chat-box::-webkit-scrollbar-track {
-      visibility: hidden;
-    }
-  
-    .chat-box:hover::-webkit-scrollbar-thumb,
-    .chat-box:hover::-webkit-scrollbar-track {
-      visibility: visible;
-    }
-  
-    ::-webkit-scrollbar {
-      width: 6px;
-    }
-  
-    ::-webkit-scrollbar-track {
-      border-radius: 8px;
-      background-color: #e7e7e7;
-      border: 1px solid #cacaca;
-    }
-  
-    ::-webkit-scrollbar-thumb {
-      border-radius: 8px;
-      background-color: #3189e1;
-    }
+  .chat-box::-webkit-scrollbar-thumb,
+  .chat-box::-webkit-scrollbar-track {
+    visibility: hidden;
   }
-  
+
+  .chat-box:hover::-webkit-scrollbar-thumb,
+  .chat-box:hover::-webkit-scrollbar-track {
+    visibility: visible;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    border-radius: 8px;
+    background-color: #e7e7e7;
+    border: 1px solid #cacaca;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background-color: #3189e1;
+  }
+}
+@media only screen and (max-width: 601px) {
+  em-emoji-picker {
+    width: 80vw;
+  }
+}

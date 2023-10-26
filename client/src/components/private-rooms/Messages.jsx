@@ -77,7 +77,6 @@ export const Messages = ({ messages }) => {
                 mt:index===0?2:""
           }}
         >
-          {console.log(message.content)}
           {message.content}
         </Typography>
         {index === messages.length - 1 ||

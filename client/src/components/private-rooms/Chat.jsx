@@ -47,7 +47,7 @@ export const Chat = ({ currentRoom, setCurrentRoom }) => {
   //add new message to UI when the message arrived
   useEffect(() => {
     const addNewMessage = (newMessage) => {
-      //add the new message to the cashe
+      //add the new message to the cache
       queryClient.setQueryData("rooms",(oldData)=>{
         let {data}=oldData
         data.forEach(room => {
