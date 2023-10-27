@@ -8,7 +8,7 @@ const Alert = forwardRef(function Alert(props, ref) {
 
 const ErrorSnackbar = ({isError,error}) => {
   const [open, setOpen] = useState(isError);
-  if (error?.response?.data?.message) {
+  if (error?.response?.data) {
     return
   }
 

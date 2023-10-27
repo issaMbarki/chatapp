@@ -16,7 +16,16 @@ import { useNavigate } from "react-router-dom";
 
 //auth queries
 export const useSignUp = () => {
-  return useMutation(signUserUp);
+  const navigate = useNavigate();
+  return useMutation(signUserUp, {
+    onSuccess: () => {
+      navigate("/",{
+        state: {
+          signedIn: true,
+        },
+      });
+    },
+  });
 };
 export const useSignIn = () => {
   const queryClient = useQueryClient();
@@ -29,7 +38,7 @@ export const useSignIn = () => {
 export const useIsAuth = () => {
   return useQuery("currentUser", isAuth, {
     retry: false,
-    refetchOnWindowFocus:false
+    refetchOnWindowFocus: false,
   });
 };
 export const useLogOut = () => {
@@ -85,15 +94,14 @@ export const useJoinRoom = () => {
 export const useLeaveRoom = () => {
   const queryClient = useQueryClient();
   const { socket } = useContext(SocketContext);
-  return useMutation(leaveRoom,{
-    onSuccess:(data)=>{
+  return useMutation(leaveRoom, {
+    onSuccess: (data) => {
       const { _id: roomId } = data.data.room;
-      queryClient.invalidateQueries(["rooms"])
-      socket.emit("leave-room",roomId)
-    }
+      queryClient.invalidateQueries(["rooms"]);
+      socket.emit("leave-room", roomId);
+    },
   });
 };
-
 
 //message queries
 export const useGetMessages = (roomId) => {
